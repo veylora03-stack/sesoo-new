@@ -4,7 +4,6 @@
 {% block content %}
 <section class="page-hero">
   <div class="container">
-    <span class="hero-badge badge glass"><span class="badge-dot"></span> نمونه‌کارها</span>
     <h1 class="page-title">پروژه‌هایی که با افتخار ساخته‌ایم</h1>
     <p class="page-subtitle">نگاهی به بخشی از پروژه‌های طراحی سایت و سئو تبریز سایت</p>
   </div>
@@ -12,7 +11,7 @@
 <section class="section">
   <div class="container">
     {% if categories %}
-    <div class="filter-chips">
+    <div class="filter-chips" style="margin-bottom: 2.5rem;">
       <a href="{% url 'portfolio:list' %}" class="filter-chip {% if not current_category %}active{% endif %}">همه</a>
       {% for cat in categories %}
       <a href="{% url 'portfolio:category' slug=cat.slug %}" class="filter-chip {% if current_category and current_category.slug == cat.slug %}active{% endif %}">{{ cat.title }}</a>

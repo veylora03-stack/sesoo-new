@@ -10,7 +10,7 @@
         <h1 class="section-title">{% if current_category %}{{ current_category.title }}{% else %}نمونه‌کارهای تبریز سایت{% endif %}</h1>
         <p class="section-subtitle">مروری بر پروژه‌های موفق و تخصصی تیم ما.</p>
         
-        <div class="mb-6" style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
+        <div class="filter-chips" style="margin-bottom: 2.5rem;">
             <a href="{% url 'portfolio:list' %}" class="btn {% if not current_category %}btn-primary{% else %}btn-outline{% endif %}">همه پروژه‌ها</a>
             {% for cat in categories %}
                 <a href="{% url 'portfolio:category' slug=cat.slug %}" class="btn {% if current_category and current_category.slug == cat.slug %}btn-primary{% else %}btn-outline{% endif %}">{{ cat.title }}</a>
