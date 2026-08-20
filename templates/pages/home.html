@@ -23,22 +23,19 @@
             </div>
         </div>
         <div class="hero-media parallax parallax-slow" data-animate data-delay="200">
-    <div class="hero-media-wrapper">
-        {% if home.hero_image %}
-        <img src="{{ home.hero_image.url }}" alt="{{ home.hero_title }}">
-        {% else %}
-        <img src="{% static 'images/hero-illustration.svg' %}" alt="طراحی سایت و سئو">
-        {% endif %}
-    </div>
-</div>
-<div class="hero-chips">
-    <div class="hero-chip hero-chip--1 glass">طراحی اختصاصی</div>
-    <div class="hero-chip hero-chip--2 glass">سئو پایه</div>
-    <div class="hero-chip hero-chip--3 glass">سرعت بالا</div>
-</div></div>
+            <div class="hero-media-wrapper">
+                {% if home.hero_image %}
+                <img src="{{ home.hero_image.url }}" alt="{{ home.hero_title }}">
+                {% else %}
+                <img src="{% static 'images/hero-illustration.svg' %}" alt="طراحی سایت و سئو">
+                {% endif %}
+            </div>
         </div>
     </div>
-    
+    <div class="hero-chips" data-animate data-delay="300">
+        <span class="hero-chip hero-chip--1 glass">طراحی اختصاصی</span>
+        <span class="hero-chip hero-chip--2 glass">سئو پایه</span>
+        <span class="hero-chip hero-chip--3 glass">سرعت بالا</span>
     </div>
     <div class="wave-divider">
         <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -48,6 +45,23 @@
 </section>
 
 
+
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">طراحی سایت شرکتی</span>
+    <span class="marquee-item">فروشگاه اینترنتی</span>
+    <span class="marquee-item">سئو و بهینه‌سازی</span>
+    <span class="marquee-item">طراحی رابط کاربری</span>
+    <span class="marquee-item">سرعت و امنیت</span>
+    <span class="marquee-item">پشتیبانی مستمر</span>
+    <span class="marquee-item">طراحی سایت شرکتی</span>
+    <span class="marquee-item">فروشگاه اینترنتی</span>
+    <span class="marquee-item">سئو و بهینه‌سازی</span>
+    <span class="marquee-item">طراحی رابط کاربری</span>
+    <span class="marquee-item">سرعت و امنیت</span>
+    <span class="marquee-item">پشتیبانی مستمر</span>
+  </div>
+</div>
 {% if services %}
 <section class="section">
     <div class="container">
@@ -224,18 +238,16 @@
       <div class="cta-content">
         <h2 class="cta-title">{{ home.cta_title|default:"آماده شروع هستید؟" }}</h2>
         <p class="cta-subtitle">{{ home.cta_subtitle|default:"همین حالا با کارشناسان ما تماس بگیرید." }}</p>
-        
         <form class="cta-form" method="post" action="{% url 'leads:contact' %}">
           {% csrf_token %}
           <input type="text" name="full_name" class="input" placeholder="نام و نام خانوادگی" required>
           <input type="tel" name="phone" class="input" placeholder="شماره تماس" required>
-          <button type="submit" class="btn btn-light btn-lg btn-ripple">
-            درخواست مشاوره
+          <button type="submit" class="btn btn-light btn-lg btn-ripple btn-magnetic">
+            <span class="btn-text">درخواست مشاوره</span>
           </button>
         </form>
-        
-        <p style="margin-top: 1rem; color: rgba(255,255,255,0.8); font-size: 0.9rem;">
-          یا <a href="{{ home.cta_button_url|default:'/contact/' }}" style="color: #fff; text-decoration: underline;">فرم کامل را پر کنید</a>
+        <p style="margin-top: 1.5rem; color: rgba(255,255,255,0.8); font-size: 0.95rem;">
+          یا <a href="{{ home.cta_button_url|default:'/contact/' }}" style="color: #fff; text-decoration: underline; font-weight: 600;">فرم کامل را پر کنید</a>
         </p>
       </div>
     </div>

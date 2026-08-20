@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}نمونه‌کارها | تبریز سایت{% endblock %}
+{% block meta_description %}نمونه‌کارهای طراحی سایت و سئو تبریز سایت{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <span class="hero-badge badge glass"><span class="badge-dot"></span> نمونه‌کارها</span>
+    <h1 class="page-title">پروژه‌هایی که با افتخار ساخته‌ایم</h1>
+    <p class="page-subtitle">نگاهی به بخشی از پروژه‌های طراحی سایت و سئو تبریز سایت</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    {% if categories %}
+    <div class="filter-chips">
+      <a href="{% url 'portfolio:list' %}" class="filter-chip {% if not current_category %}active{% endif %}">همه</a>
+      {% for cat in categories %}
+      <a href="{% url 'portfolio:category' slug=cat.slug %}" class="filter-chip {% if current_category and current_category.slug == cat.slug %}active{% endif %}">{{ cat.title }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if projects %}
+    <div class="grid grid-3">
+      {% for project in projects %}
+      <div data-animate data-delay="{{ forloop.counter0|add:1 }}00">{% include "includes/portfolio_card.html" with project=project %}</div>
+      {% endfor %}
+    </div>
+    {% include "includes/pagination.html" %}
+    {% else %}
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <h3>هنوز نمونه‌کاری ثبت نشده</h3>
+      <p>به‌زودی پروژه‌های جدید اینجا قرار می‌گیرند.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

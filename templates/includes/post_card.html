@@ -1,22 +1,20 @@
-<div class="card">
+{% load static %}
+<article class="bcard">
+  <a href="{{ post.get_absolute_url }}" class="bcard-media">
     {% if post.cover_image %}
-        <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+    <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" loading="lazy">
     {% else %}
-        <div class="card-img-top" style="height: 200px; background-color: var(--color-surface); display: flex; align-items: center; justify-content: center; color: var(--color-muted);">
-            بدون تصویر
-        </div>
+    <div class="bcard-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
     {% endif %}
-    <div class="card-body" style="padding: var(--space-4);">
-        <div class="mb-2">
-            <a href="{{ post.category.get_absolute_url }}" class="badge" style="background-color: var(--color-primary); color: #fff; padding: 4px 8px; border-radius: var(--radius-sm); text-decoration: none;">{{ post.category.title }}</a>
-        </div>
-        <h3 class="card-title">{{ post.title }}</h3>
-        <p class="text-muted mb-2" style="font-size: 0.875rem;">
-            {% if post.published_at %}{{ post.published_at|date:"Y/m/d" }}{% endif %}
-        </p>
-        <p class="card-text">{{ post.excerpt|truncatewords:20 }}</p>
-        <div class="card-actions mt-3">
-            <a href="{{ post.get_absolute_url }}" class="btn btn-outline">ادامه مطلب</a>
-        </div>
+    <span class="bcard-cat">{{ post.category.title }}</span>
+  </a>
+  <div class="bcard-body">
+    <div class="bcard-meta">
+      {% if post.published_at %}<span>{{ post.published_at|date:"Y/m/d" }}</span>{% endif %}
+      <span>{{ post.view_count }} بازدید</span>
     </div>
-</div>
+    <h3 class="bcard-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+    <p class="bcard-text">{{ post.excerpt|truncatewords:20 }}</p>
+    <a href="{{ post.get_absolute_url }}" class="bcard-more">ادامه مطلب <span class="arrow">←</span></a>
+  </div>
+</article>
