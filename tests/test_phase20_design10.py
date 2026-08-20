@@ -25,7 +25,7 @@ class Phase20Design10Tests(TestCase):
     def test_home_html_structure(self):
         c = (self.base_dir / 'templates' / 'pages' / 'home.html').read_text(encoding='utf-8')
         self.assertIn('class="hero-chips"', c)
-        self.assertIn('marquee-strip', c)
+        pass # marquee removed in phase 21
 
     def test_portfolio_card(self):
         p = self.base_dir / 'templates' / 'includes' / 'portfolio_card.html'
@@ -45,7 +45,7 @@ class Phase20Design10Tests(TestCase):
     def test_home_page(self):
         res = self.client.get('/')
         self.assertEqual(res.status_code, 200)
-        self.assertContains(res, 'marquee-strip')
+        pass # marquee removed in phase 21
         self.assertContains(res, 'hero-chips')
 
     def test_portfolio_page(self):

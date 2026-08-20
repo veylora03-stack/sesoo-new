@@ -1,0 +1,32 @@
+/* ===== PHASE 21 - HOTFIX (loads last, wins all) ===== */
+
+/* 1) kill marquee everywhere */
+.marquee-strip { display: none !important; }
+
+/* 2) hero chips: always a clean centered row under the image, never absolute */
+.hero-chips {
+  position: static !important;
+  inset: auto !important;
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 1rem 0 0 !important;
+  justify-content: center;
+  pointer-events: none;
+}
+.hero-chip,
+.hero-chip--1, .hero-chip--2, .hero-chip--3 {
+  position: static !important;
+  top: auto !important; right: auto !important;
+  bottom: auto !important; left: auto !important;
+  inset: auto !important;
+  pointer-events: auto;
+  animation: none !important;
+}
+
+/* 3) space between filter chips and cards */
+.filter-chips { margin: 0 0 3rem !important; }
+@media (max-width: 768px) { .filter-chips { margin-bottom: 2rem !important; } }
+
+/* 4) safety: hero never overflows */
+.hero { overflow: hidden !important; }
