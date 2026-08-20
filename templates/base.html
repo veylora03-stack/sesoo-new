@@ -79,8 +79,12 @@
     <link rel="stylesheet" href="/static/css/ui20.css?v=22">
     <link rel="stylesheet" href="/static/css/fix21.css?v=22">
     <link rel="stylesheet" href="/static/css/fix22.css?v=22">
+    <link rel="stylesheet" href="{% static 'css/icons.css' %}?v=23">
+    <link rel="stylesheet" href="{% static 'css/icons.css' %}?v=23">
+    <link rel="stylesheet" href="/static/css/icons.css?v=23">
 </head>
 <body>
+    {% include "includes/icons.html" %}
     <div class="scroll-progress" aria-hidden="true"></div>
     <a href="#main" class="skip-link">رفتن به محتوای اصلی</a>
     {% include "includes/header.html" %}
@@ -93,6 +97,6 @@
     <script src="{% static 'js/premium.js' %}"></script>
     <script src="{% static 'js/animations.js' %}"></script>
     {% block extra_js %}{% endblock %}
-    <button class="back-to-top" aria-label="بازگشت به بالا">↑</button>
+    <button class="back-to-top" aria-label="بازگشت به بالا"><svg class="icon icon-md"><use href="#i-arrow-up"></use></svg></button>
 </body>
 </html>

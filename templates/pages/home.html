@@ -58,7 +58,7 @@
             {% for service in services %}
             <div class="card" data-animate data-delay="{{ forloop.counter0|add:1 }}00">
                 <div class="card-icon">
-                    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    <svg class="icon icon-lg"><use href="{% if service.slug == 'web-design' %}#i-code{% elif service.slug == 'seo' %}#i-trending{% else %}#i-layers{% endif %}"></use></svg>
                 </div>
                 <h3 class="card-title">{{ service.title }}</h3>
                 <p class="card-text">{{ service.short_description }}</p>
@@ -80,22 +80,22 @@
         </div>
         <div class="grid grid-4">
             <div class="card" data-animate>
-                <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg></div>
+                <div class="card-icon"><svg class="icon icon-lg"><use href="#i-chart"></use></svg></div>
                 <h3 class="card-title">طراحی بر اساس هدف</h3>
                 <p class="card-text">طراحی ما صرفاً زیبا نیست؛ بلکه برای تبدیل بازدیدکننده به مشتری مهندسی شده است.</p>
             </div>
             <div class="card" data-animate data-delay="100">
-                <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+                <div class="card-icon"><svg class="icon icon-lg"><use href="#i-users"></use></svg></div>
                 <h3 class="card-title">تجربه کاربری روان</h3>
                 <p class="card-text">رابط کاربری ساده، جذاب و کاملاً واکنش‌گرا در تمامی دستگاه‌ها.</p>
             </div>
             <div class="card" data-animate data-delay="200">
-                <div class="card-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+                <div class="card-icon"><svg class="icon icon-lg"><use href="#i-zap"></use></svg></div>
                 <h3 class="card-title">سرعت و سئو پایه</h3>
                 <p class="card-text">رعایت اصول سئوی تکنیکال و بهینه‌سازی سرعت از همان روز اول.</p>
             </div>
             <div class="card" data-animate data-delay="300">
-                <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                <div class="card-icon"><svg class="icon icon-lg"><use href="#i-shield"></use></svg></div>
                 <h3 class="card-title">پشتیبانی و توسعه</h3>
                 <p class="card-text">همراهی مستمر پس از تحویل پروژه برای توسعه و امنیت سایت.</p>
             </div>
@@ -104,10 +104,10 @@
 </section>
 <div class="container">
         <div class="trust-bar glass" data-animate data-delay="400">
-            <div class="trust-item"><span class="trust-icon">✓</span> طراحی بر اساس هدف</div>
-            <div class="trust-item"><span class="trust-icon">✓</span> تجربه کاربری روان</div>
-            <div class="trust-item"><span class="trust-icon">✓</span> سرعت و سئو پایه</div>
-            <div class="trust-item"><span class="trust-icon">✓</span> پشتیبانی و توسعه</div>
+            <div class="trust-item"><svg class="icon icon-sm trust-icon"><use href="#i-check"></use></svg> طراحی بر اساس هدف</div>
+            <div class="trust-item"><svg class="icon icon-sm trust-icon"><use href="#i-check"></use></svg> تجربه کاربری روان</div>
+            <div class="trust-item"><svg class="icon icon-sm trust-icon"><use href="#i-check"></use></svg> سرعت و سئو پایه</div>
+            <div class="trust-item"><svg class="icon icon-sm trust-icon"><use href="#i-check"></use></svg> پشتیبانی و توسعه</div>
         </div>
 
 {% if process_steps %}

@@ -4,7 +4,7 @@
     {% if post.cover_image %}
     <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" loading="lazy">
     {% else %}
-    <div class="bcard-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+    <div class="bcard-placeholder"><svg class="icon icon-xl"><use href="#i-article"></use></svg></div>
     {% endif %}
     <span class="bcard-cat">{{ post.category.title }}</span>
   </a>
@@ -15,6 +15,6 @@
     </div>
     <h3 class="bcard-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
     <p class="bcard-text">{{ post.excerpt|truncatewords:20 }}</p>
-    <a href="{{ post.get_absolute_url }}" class="bcard-more">ادامه مطلب <span class="arrow">←</span></a>
+    <a href="{{ post.get_absolute_url }}" class="bcard-more">ادامه مطلب <svg class="icon icon-sm"><use href="#i-arrow-left"></use></svg></a>
   </div>
 </article>

@@ -4,10 +4,10 @@
     {% if project.cover_image %}
     <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" loading="lazy">
     {% else %}
-    <div class="pcard-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+    <div class="pcard-placeholder"><svg class="icon icon-xl"><use href="#i-image"></use></svg></div>
     {% endif %}
     <span class="pcard-cat">{{ project.category.title }}</span>
-    <span class="pcard-view">مشاهده پروژه ←</span>
+    <span class="pcard-view">مشاهده پروژه <svg class="icon icon-sm"><use href="#i-arrow-left"></use></svg></span>
   </a>
   <div class="pcard-body">
     <h3 class="pcard-title"><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></h3>
