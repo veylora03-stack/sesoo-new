@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if site_settings and site_settings.default_seo_title %}{{ site_settings.default_seo_title }}{% elif home.hero_title %}{{ home.hero_title }}{% else %}تبریز سایت{% endif %}{% endblock %}
+{% block meta_description %}{% if site_settings and site_settings.default_seo_description %}{{ site_settings.default_seo_description }}{% else %}{{ home.hero_subtitle|striptags|truncatewords:20 }}{% endif %}{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="blob blob--cyan"></div>
+    <div class="blob blob--peach"></div>
+    <div class="container hero-inner">
+        <div class="hero-content" data-animate>
+            <span class="hero-badge badge glass"><span class="badge-dot"></span> آژانس دیجیتال تبریز سایت</span>
+            <h1 class="hero-title">{{ home.hero_title|default:"طراحی سایت و سئو" }} <span class="text-gradient">تبریز</span></h1>
+            <p class="hero-subtitle">{{ home.hero_subtitle|linebreaksbr|default:"ما با ترکیب خلاقیت و مهندسی، وب‌سایتی می‌سازیم که واقعاً برای کسب‌وکار شما کار کند." }}</p>
+            <div class="hero-actions">
+                <a href="{{ home.primary_cta_url|default:'/contact/' }}" class="btn btn-primary btn-lg">{{ home.primary_cta_text|default:"درخواست مشاوره رایگان" }}</a>
+                {% if home.secondary_cta_text and home.secondary_cta_url %}
+                    <a href="{{ home.secondary_cta_url }}" class="btn btn-outline btn-lg">{{ home.secondary_cta_text }}</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="hero-media" data-animate data-delay="200">
+            <div class="hero-media-wrapper">
+                {% if home.hero_image %}
+                    <img src="{{ home.hero_image.url }}" alt="{{ home.hero_title }}">
+                {% else %}
+                    <img src="{% static 'images/hero-illustration.svg' %}" alt="طراحی سایت و سئو">
+                {% endif %}
+                <div class="hero-chip hero-chip--1 glass">طراحی اختصاصی</div>
+                <div class="hero-chip hero-chip--2 glass">سئو پایه</div>
+                <div class="hero-chip hero-chip--3 glass">سرعت بالا</div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="trust-bar glass" data-animate data-delay="400">
+            <div class="trust-item"><span class="trust-icon">✓</span> طراحی بر اساس هدف</div>
+            <div class="trust-item"><span class="trust-icon">✓</span> تجربه کاربری روان</div>
+            <div class="trust-item"><span class="trust-icon">✓</span> سرعت و سئو پایه</div>
+            <div class="trust-item"><span class="trust-icon">✓</span> پشتیبانی و توسعه</div>
+        </div>
+    </div>
+    <div class="wave-divider">
+        <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 50L48 45C96 40 192 30 288 35C384 40 480 60 576 65C672 70 768 60 864 50C960 40 1056 30 1152 35C1248 40 1344 60 1392 70L1440 80V100H1392C1344 100 1248 100 1152 100C1056 100 960 100 864 100C768 100 672 100 576 100C480 100 384 100 288 100C192 100 96 100 48 100H0V50Z" fill="#FFFFFF"/>
+        </svg>
+    </div>
+</section>
+
+{% if services %}
+<section class="section">
+    <div class="container">
+        <div class="section-head" data-animate>
+            <h2 class="section-title">{{ home.services_heading|default:"خدمات ما" }}</h2>
+            <p class="section-subtitle">{{ home.services_subheading|default:"راهکارهای جامع دیجیتال برای رشد کسب‌وکار شما" }}</p>
+        </div>
+        <div class="grid grid-3 services-grid">
+            {% for service in services %}
+            <div class="card" data-animate data-delay="{{ forloop.counter0|add:1 }}00">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </div>
+                <h3 class="card-title">{{ service.title }}</h3>
+                <p class="card-text">{{ service.short_description }}</p>
+                <a href="{{ service.get_absolute_url }}" class="btn btn-outline">مشاهده جزئیات</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="section section-alt">
+    <div class="blob blob--cyan" style="top: 10%; left: -10%;"></div>
+    <div class="container">
+        <div class="section-head" data-animate>
+            <h2 class="section-title">چرا تبریز سایت؟</h2>
+            <p class="section-subtitle">ما با ترکیب خلاقیت و مهندسی، وب‌سایتی می‌سازیم که واقعاً برای کسب‌وکار شما کار کند.</p>
+        </div>
+        <div class="grid grid-4">
+            <div class="card" data-animate>
+                <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg></div>
+                <h3 class="card-title">طراحی بر اساس هدف</h3>
+                <p class="card-text">طراحی ما صرفاً زیبا نیست؛ بلکه برای تبدیل بازدیدکننده به مشتری مهندسی شده است.</p>
+            </div>
+            <div class="card" data-animate data-delay="100">
+                <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+                <h3 class="card-title">تجربه کاربری روان</h3>
+                <p class="card-text">رابط کاربری ساده، جذاب و کاملاً واکنش‌گرا در تمامی دستگاه‌ها.</p>
+            </div>
+            <div class="card" data-animate data-delay="200">
+                <div class="card-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+                <h3 class="card-title">سرعت و سئو پایه</h3>
+                <p class="card-text">رعایت اصول سئوی تکنیکال و بهینه‌سازی سرعت از همان روز اول.</p>
+            </div>
+            <div class="card" data-animate data-delay="300">
+                <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                <h3 class="card-title">پشتیبانی و توسعه</h3>
+                <p class="card-text">همراهی مستمر پس از تحویل پروژه برای توسعه و امنیت سایت.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if process_steps %}
+<section class="section">
+    <div class="container">
+        <div class="section-head" data-animate>
+            <h2 class="section-title">فرآیند همکاری با تبریز سایت</h2>
+            <p class="section-subtitle">مسیر شفاف و حرفه‌ای ما برای تبدیل ایده‌های شما به واقعیت</p>
+        </div>
+        <div class="process">
+            {% for step in process_steps %}
+            <div class="process-step" data-animate data-delay="{{ forloop.counter0|add:1 }}00">
+                <div class="process-node">{{ forloop.counter }}</div>
+                <h3 class="process-title">{{ step.title }}</h3>
+                <p class="process-desc">{{ step.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if featured_projects %}
+<section class="section section-alt">
+    <div class="container">
+        <div class="section-head" data-animate>
+            <h2 class="section-title">{{ home.portfolio_heading|default:"نمونه‌کارهای منتخب" }}</h2>
+            <p class="section-subtitle">{{ home.portfolio_subheading }}</p>
+        </div>
+        <div class="grid grid-3">
+            {% for project in featured_projects %}
+                <div class="portfolio-card" data-animate data-delay="{{ forloop.counter0|add:1 }}00">
+                    <div class="portfolio-img">
+                        {% if project.cover_image %}<img src="{{ project.cover_image.url }}" alt="{{ project.title }}">{% else %}<div class="portfolio-placeholder"></div>{% endif %}
+                        <div class="portfolio-overlay">
+                            <a href="{{ project.get_absolute_url }}" class="btn btn-light btn-sm">مشاهده پروژه</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-info">
+                        <h3 class="card-title">{{ project.title }}</h3>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-6" data-animate>
+            <a href="/portfolio/" class="btn btn-outline btn-lg">مشاهده همه نمونه‌کارها</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if testimonials %}
+<section class="section">
+    <div class="container">
+        <div class="section-head" data-animate>
+            <h2 class="section-title">{{ home.testimonials_heading|default:"نظرات مشتریان" }}</h2>
+        </div>
+        <div class="grid grid-3">
+            {% for t in testimonials %}
+            <div class="card testimonial-card" data-animate data-delay="{{ forloop.counter0|add:1 }}00">
+                <p class="card-text">"{{ t.text }}"</p>
+                <h4 class="testimonial-name">{{ t.client_name }}</h4>
+                {% if t.company %}<p class="testimonial-company">{{ t.company }}</p>{% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if latest_posts %}
+<section class="section section-alt">
+    <div class="container">
+        <div class="section-head" data-animate>
+            <h2 class="section-title">{{ home.blog_heading|default:"آخرین مقالات" }}</h2>
+        </div>
+        <div class="grid grid-3">
+            {% for post in latest_posts %}
+                <div data-animate data-delay="{{ forloop.counter0|add:1 }}00">{% include "includes/post_card.html" with post=post %}</div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-6" data-animate>
+            <a href="/blog/" class="btn btn-outline btn-lg">مشاهده همه مقالات</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if faqs %}
+<section class="section">
+    <div class="container">
+        <div class="section-head" data-animate>
+            <h2 class="section-title">{{ home.faq_heading|default:"سوالات متداول" }}</h2>
+        </div>
+        <div class="faq-list">
+            {% for faq in faqs %}
+            <details class="faq-item" data-animate data-delay="{{ forloop.counter0|add:1 }}0">
+                <summary class="faq-question">{{ faq.question }}</summary>
+                <div class="faq-answer">
+                    <p>{{ faq.answer|linebreaksbr }}</p>
+                </div>
+            </details>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="section" style="padding: 2rem 0;">
+    <div class="container">
+        <div class="cta-section" id="lead-form" data-animate>
+            <div class="cta-pattern"></div>
+            <h2 class="cta-title">{{ home.cta_title|default:"آماده شروع هستید؟" }}</h2>
+            <p class="cta-subtitle">{{ home.cta_subtitle|default:"همین حالا با کارشناسان ما تماس بگیرید." }}</p>
+            <a href="{{ home.cta_button_url|default:'/contact/' }}" class="btn btn-light btn-lg">{{ home.cta_button_text|default:"درخواست مشاوره" }}</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

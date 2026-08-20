@@ -1,0 +1,13 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "{{ project.title|escapejs }}",
+  "description": "{% if project.seo_description %}{{ project.seo_description|escapejs }}{% else %}{{ project.summary|escapejs }}{% endif %}",
+  "url": "{{ request.scheme }}://{{ request.get_host }}{{ project.get_absolute_url }}",
+  "creator": {
+    "@type": "Organization",
+    "name": "{% if site_settings and site_settings.brand_name %}{{ site_settings.brand_name|escapejs }}{% else %}تبریز سایت{% endif %}"
+  }
+}
+</script>

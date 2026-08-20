@@ -1,0 +1,22 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ post.title|escapejs }}",
+  "description": "{% if post.seo_description %}{{ post.seo_description|escapejs }}{% else %}{{ post.excerpt|escapejs }}{% endif %}",
+  "datePublished": "{{ post.published_at|date:'Y-m-d\TH:i:s' }}",
+  "dateModified": "{{ post.updated_at|date:'Y-m-d\TH:i:s' }}",
+  "author": {
+    "@type": "Person",
+    "name": "{% if post.author_name %}{{ post.author_name|escapejs }}{% else %}تبریز سایت{% endif %}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{% if site_settings and site_settings.brand_name %}{{ site_settings.brand_name|escapejs }}{% else %}تبریز سایت{% endif %}"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.scheme }}://{{ request.get_host }}{{ post.get_absolute_url }}"
+  }
+}
+</script>

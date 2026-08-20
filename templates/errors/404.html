@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}صفحه پیدا نشد | تبریز سایت{% endblock %}
+{% block robots %}noindex,nofollow{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container text-center">
+        <h1 class="section-title">صفحه مورد نظر پیدا نشد</h1>
+        <p class="section-subtitle">متاسفانه صفحه‌ای که به دنبال آن هستید وجود ندارد یا منتقل شده است.</p>
+        <div style="display: flex; gap: var(--space-3); justify-content: center; margin-top: var(--space-6);">
+            <a href="/" class="btn btn-primary">بازگشت به صفحه اصلی</a>
+            <a href="/contact/" class="btn btn-outline">تماس با ما</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

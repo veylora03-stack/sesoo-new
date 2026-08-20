@@ -1,0 +1,24 @@
+<div class="card">
+    {% if project.cover_image %}
+        <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+    {% else %}
+        <div class="card-img-top" style="height: 200px; background-color: var(--color-surface); display: flex; align-items: center; justify-content: center; color: var(--color-muted);">
+            بدون تصویر
+        </div>
+    {% endif %}
+    <div class="card-body" style="padding: var(--space-4);">
+        <h3 class="card-title">{{ project.title }}</h3>
+        <p class="text-muted mb-2">{{ project.category.title }}</p>
+        <p class="card-text">{{ project.summary|truncatewords:20 }}</p>
+        {% if project.technologies.all %}
+        <div class="mb-3">
+            {% for tech in project.technologies.all|slice:":3" %}
+                <span class="badge" style="background-color: var(--color-surface); padding: 4px 8px; border-radius: var(--radius-sm); margin-inline-end: 4px; border: 1px solid var(--color-border);">{{ tech.title }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="card-actions">
+            <a href="{{ project.get_absolute_url }}" class="btn btn-primary">مشاهده پروژه</a>
+        </div>
+    </div>
+</div>

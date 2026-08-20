@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if about.seo_title %}{{ about.seo_title }}{% else %}{{ about.title }} | تبریز سایت{% endif %}{% endblock %}
+{% block meta_description %}{% if about.seo_description %}{{ about.seo_description }}{% else %}{{ about.intro }}{% endif %}{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="section-title">{{ about.title }}</h1>
+        <div class="content-area">
+            {{ about.intro|linebreaks }}
+        </div>
+    </div>
+</section>
+
+{% if about.story_title %}
+<section class="section" style="background-color: var(--color-surface);">
+    <div class="container">
+        <h2 class="section-title">{{ about.story_title }}</h2>
+        <p>{{ about.story_content|linebreaks }}</p>
+    </div>
+</section>
+{% endif %}
+
+<div class="grid grid-2">
+    {% if about.mission_title %}
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">{{ about.mission_title }}</h2>
+            <p>{{ about.mission_content|linebreaks }}</p>
+        </div>
+    </section>
+    {% endif %}
+    {% if about.vision_title %}
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">{{ about.vision_title }}</h2>
+            <p>{{ about.vision_content|linebreaks }}</p>
+        </div>
+    </section>
+    {% endif %}
+</div>
+
+{% if team_members %}
+<section class="section" style="background-color: var(--color-surface);">
+    <div class="container">
+        <h2 class="section-title text-center">تیم ما</h2>
+        <div class="grid grid-3">
+            {% for member in team_members %}
+            <div class="card text-center">
+                <h3 class="card-title">{{ member.full_name }}</h3>
+                <p class="text-muted">{{ member.role }}</p>
+                <p class="card-text">{{ member.bio }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if testimonials %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title text-center">نظرات مشتریان</h2>
+        <div class="grid grid-3">
+            {% for t in testimonials %}
+            <div class="card">
+                <p class="card-text">"{{ t.text }}"</p>
+                <h4 style="margin-top: var(--space-3); color: var(--color-primary);">{{ t.client_name }}</h4>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="section" style="background-color: var(--color-surface);">
+    <div class="container text-center">
+        <h2 class="section-title">همکاری با ما</h2>
+        <a href="{% url 'leads:contact' %}" class="btn btn-primary">درخواست مشاوره</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if current_category %}{{ current_category.title }} | {% endif %}نمونه‌کارها | تبریز سایت{% endblock %}
+{% block meta_description %}مشاهده نمونه‌کارهای طراحی سایت و سئو تبریز سایت{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="section-title">{% if current_category %}{{ current_category.title }}{% else %}نمونه‌کارهای تبریز سایت{% endif %}</h1>
+        <p class="section-subtitle">مروری بر پروژه‌های موفق و تخصصی تیم ما.</p>
+        
+        <div class="mb-6" style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
+            <a href="{% url 'portfolio:list' %}" class="btn {% if not current_category %}btn-primary{% else %}btn-outline{% endif %}">همه پروژه‌ها</a>
+            {% for cat in categories %}
+                <a href="{% url 'portfolio:category' slug=cat.slug %}" class="btn {% if current_category and current_category.slug == cat.slug %}btn-primary{% else %}btn-outline{% endif %}">{{ cat.title }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="grid grid-3">
+            {% for project in projects %}
+                {% include "includes/portfolio_card.html" with project=project %}
+            {% empty %}
+                <p>در حال حاضر نمونه‌کاری برای نمایش وجود ندارد.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

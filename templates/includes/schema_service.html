@@ -1,0 +1,19 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "{{ service.title|escapejs }}",
+  "description": "{% if service.seo_description %}{{ service.seo_description|escapejs }}{% else %}{{ service.short_description|escapejs }}{% endif %}",
+  "provider": {
+    "@type": "Organization",
+    "name": "{% if site_settings and site_settings.brand_name %}{{ site_settings.brand_name|escapejs }}{% else %}تبریز سایت{% endif %}"
+  },
+  "areaServed": {
+    "@type": "Place",
+    "name": "{% if site_settings and site_settings.city %}{{ site_settings.city|escapejs }}{% else %}تبریز{% endif %}"
+  }
+}
+</script>
+{% if faqs %}
+{% include "includes/schema_faq.html" %}
+{% endif %}

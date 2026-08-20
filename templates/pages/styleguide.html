@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block robots %}noindex,nofollow{% endblock %}
+{% load static %}
+
+{% block title %}راهنمای طراحی | تبریز سایت{% endblock %}
+
+{% block meta_description %}راهنمای طراحی سیستم تبریز سایت شامل رنگ‌ها، تایپوگرافی، دکمه‌ها، فرم‌ها و سایر کامپوننت‌ها{% endblock %}
+
+{% block content %}
+<div data-component="styleguide" class="container styleguide-wrapper">
+    <h1 class="section-title">راهنمای طراحی تبریز سایت</h1>
+
+    <section class="styleguide-section">
+        <h2>رنگ‌ها</h2>
+        <div class="grid grid-4">
+            <div class="color-swatch" style="background-color: var(--color-primary);"></div>
+            <div class="color-swatch" style="background-color: var(--color-secondary);"></div>
+            <div class="color-swatch" style="background-color: var(--color-accent);"></div>
+            <div class="color-swatch" style="background-color: var(--color-success);"></div>
+        </div>
+    </section>
+
+    <section class="styleguide-section">
+        <h2>تایپوگرافی</h2>
+        <h1>عنوان سطح ۱</h1>
+        <h2>عنوان سطح ۲</h2>
+        <h3>عنوان سطح ۳</h3>
+        <p>متن پاراگراف عادی برای نمایش فونت پایه و خوانایی.</p>
+    </section>
+
+    <section class="styleguide-section">
+        <h2>دکمه‌ها</h2>
+        <a href="#" class="btn btn-primary">دکمه اصلی</a>
+        <a href="#" class="btn btn-outline">دکمه Outline</a>
+        <a href="#" class="btn btn-ghost">دکمه Ghost</a>
+    </section>
+
+    <section class="styleguide-section">
+        <h2>فرم‌ها</h2>
+        <form>
+            <div class="form-group">
+                <label class="label" for="input1">فیلد متنی</label>
+                <input type="text" id="input1" class="input" placeholder="متن خود را وارد کنید">
+            </div>
+            <div class="form-group">
+                <label class="label" for="textarea1">توضیحات</label>
+                <textarea id="textarea1" class="textarea" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="label" for="select1">انتخاب کنید</label>
+                <select id="select1" class="select">
+                    <option>گزینه ۱</option>
+                    <option>گزینه ۲</option>
+                </select>
+            </div>
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="check1">
+                <label for="check1">قوانین را می‌پذیرم</label>
+            </div>
+        </form>
+    </section>
+
+    <section class="styleguide-section">
+        <h2>کارت‌ها</h2>
+        <div class="grid grid-3">
+            <div class="card">
+                <h3 class="card-title">عنوان کارت</h3>
+                <p class="card-text">توضیحات کوتاه درباره این کارت و محتوای آن.</p>
+                <div class="card-actions">
+                    <a href="#" class="btn btn-primary">مشاهده</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="styleguide-section">
+        <h2>هشدارها</h2>
+        <div class="alert alert-info">این یک پیام اطلاعاتی است.</div>
+        <div class="alert alert-success">عملیات با موفقیت انجام شد.</div>
+        <div class="alert alert-warning">هشدار: لطفا دقت کنید.</div>
+        <div class="alert alert-error">خطا: مشکلی پیش آمده است.</div>
+    </section>
+
+    <section class="styleguide-section">
+        <h2>گرید</h2>
+        <div class="grid grid-4">
+            <div style="background: var(--color-surface); padding: var(--space-4); text-align: center;">1</div>
+            <div style="background: var(--color-surface); padding: var(--space-4); text-align: center;">2</div>
+            <div style="background: var(--color-surface); padding: var(--space-4); text-align: center;">3</div>
+            <div style="background: var(--color-surface); padding: var(--space-4); text-align: center;">4</div>
+        </div>
+    </section>
+
+    <section class="styleguide-section" id="lead-form">
+        <h2>فرم درخواست مشاوره (لید)</h2>
+        <form class="lead-form">
+            <div class="form-group">
+                <label class="label" for="lead-name">نام و نام خانوادگی</label>
+                <input type="text" id="lead-name" class="input">
+            </div>
+            <div class="form-group">
+                <label class="label" for="lead-phone">شماره تماس</label>
+                <input type="tel" id="lead-phone" class="input">
+            </div>
+            <div class="form-group">
+                <label class="label" for="lead-msg">پیام</label>
+                <textarea id="lead-msg" class="textarea" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">ارسال درخواست</button>
+        </form>
+    </section>
+</div>
+{% endblock %}

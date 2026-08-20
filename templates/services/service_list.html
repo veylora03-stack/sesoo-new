@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}خدمات | تبریز سایت{% endblock %}
+{% block meta_description %}لیست خدمات طراحی سایت و سئو تبریز سایت{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="section-title">خدمات تبریز سایت</h1>
+        <p class="section-subtitle">ما طیف وسیعی از خدمات دیجیتال را برای رشد کسب‌وکار شما ارائه می‌دهیم.</p>
+        
+        <div class="grid grid-2">
+            {% for service in services %}
+            <div class="card">
+                <h3 class="card-title">{{ service.title }}</h3>
+                <p class="card-text">{{ service.short_description }}</p>
+                <div class="card-actions">
+                    <a href="{{ service.get_absolute_url }}" class="btn btn-primary">مشاهده جزئیات</a>
+                </div>
+            </div>
+            {% empty %}
+            <p>در حال حاضر خدمتی ثبت نشده است.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}تماس با ما | تبریز سایت{% endblock %}
+{% block meta_description %}برای دریافت مشاوره رایگان و ثبت درخواست طراحی سایت و سئو با کارشناسان تبریز سایت تماس بگیرید.{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="section-title">درخواست مشاوره رایگان</h1>
+        <p class="section-subtitle">فرم زیر را تکمیل کنید تا کارشناسان ما در اسرع وقت با شما تماس بگیرند.</p>
+        
+        <div class="lead-form-wrapper">
+            {% include "includes/lead_form.html" %}
+        </div>
+    </div>
+</section>
+{% endblock %}

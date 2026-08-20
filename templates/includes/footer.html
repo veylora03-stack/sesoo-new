@@ -1,0 +1,54 @@
+{% load static %}
+<footer class="site-footer" data-component="site-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    {% if site_settings and site_settings.logo %}<img src="{{ site_settings.logo.url }}" alt="{{ site_settings.brand_name }}" style="filter: brightness(0) invert(1);">{% else %}<img src="{% static 'images/logo-placeholder.svg' %}" alt="تبریز سایت" style="filter: brightness(0) invert(1);">{% endif %}
+                </div>
+                <p class="footer-desc">{% if site_settings and site_settings.description %}{{ site_settings.description }}{% else %}تبریز سایت، آژانس دیجیتال مارکتینگ و طراحی سایت در تبریز، همراه شما در مسیر رشد دیجیتال.{% endif %}</p>
+                {% if social_links %}
+                <div class="footer-social">
+                    {% for link in social_links %}<a href="{{ link.url }}" target="_blank" rel="noopener" aria-label="{{ link.title }}">{{ link.title }}</a>{% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">لینک‌های سریع</h4>
+                <ul>
+                    {% if footer_menu %}
+                        {% for item in footer_menu %}<li><a href="{{ item.url }}">{{ item.title }}</a></li>{% endfor %}
+                    {% else %}
+                        <li><a href="/">صفحه اصلی</a></li>
+                        <li><a href="/about-us/">درباره ما</a></li>
+                        <li><a href="/portfolio/">نمونه‌کارها</a></li>
+                        <li><a href="/blog/">وبلاگ</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">خدمات ما</h4>
+                <ul>
+                    <li><a href="/services/web-design/">طراحی سایت</a></li>
+                    <li><a href="/services/seo/">سئو سایت</a></li>
+                    <li><a href="/services/">همه خدمات</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">تماس با ما</h4>
+                <ul class="footer-contact">
+                    {% if site_settings and site_settings.address %}<li>{{ site_settings.address }}</li>{% endif %}
+                    {% if site_settings and site_settings.phone %}<li><a href="tel:{{ site_settings.phone }}">{{ site_settings.phone }}</a></li>{% endif %}
+                    {% if site_settings and site_settings.email %}<li><a href="mailto:{{ site_settings.email }}">{{ site_settings.email }}</a></li>{% endif %}
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>{% if site_settings and site_settings.copyright %}{{ site_settings.copyright }}{% else %}© تبریز سایت | تمامی حقوق محفوظ است.{% endif %}</p>
+            <div class="footer-legal">
+                <a href="/terms/">قوانین و مقررات</a>
+                <a href="/privacy/">حریم خصوصی</a>
+            </div>
+        </div>
+    </div>
+</footer>

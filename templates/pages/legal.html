@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }} | تبریز سایت{% endif %}{% endblock %}
+{% block meta_description %}{% if page.seo_description %}{{ page.seo_description }}{% else %}{{ page.title }}{% endif %}{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container" style="max-width: 800px; margin: 0 auto;">
+        <h1 class="section-title">{{ page.title }}</h1>
+        <div class="content-area">
+            {{ page.content|linebreaks }}
+        </div>
+    </div>
+</section>
+{% endblock %}

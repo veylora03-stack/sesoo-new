@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block schema %}
+{% include "includes/schema_service.html" %}
+{% endblock %}
+{% load static %}
+
+{% block title %}{% if service.seo_title %}{{ service.seo_title }}{% else %}{{ service.title }} | تبریز سایت{% endif %}{% endblock %}
+{% block meta_description %}{% if service.seo_description %}{{ service.seo_description }}{% else %}{{ service.short_description }}{% endif %}{% endblock %}
+
+{% block content %}
+<section class="section" style="background-color: var(--color-surface);">
+    <div class="container text-center">
+        <h1 class="section-title">{{ service.hero_title }}</h1>
+        <p class="section-subtitle">{{ service.hero_subtitle }}</p>
+        <a href="{% url 'leads:contact' %}?service={{ service.lead_service_type }}" class="btn btn-primary">درخواست مشاوره</a>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="content-area">
+            {{ service.content|linebreaks }}
+        </div>
+    </div>
+</section>
+
+{% if features %}
+<section class="section" style="background-color: var(--color-surface);">
+    <div class="container">
+        <h2 class="section-title">ویژگی‌های خدمت</h2>
+        <div class="grid grid-2">
+            {% for feature in features %}
+            <div class="card">
+                <h3 class="card-title">{{ feature.title }}</h3>
+                <p class="card-text">{{ feature.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if pricings %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">پکیج‌های خدمت</h2>
+        <div class="grid grid-3">
+            {% for pricing in pricings %}
+            <div class="card">
+                <h3 class="card-title">{{ pricing.title }}</h3>
+                <p class="text-muted">{{ pricing.price_note }}</p>
+                <div class="card-text">{{ pricing.features|linebreaks }}</div>
+                <div class="card-actions">
+                    <a href="{% url 'leads:contact' %}?service={{ service.lead_service_type }}" class="btn btn-outline">{{ pricing.cta_text }}</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if faqs %}
+<section class="section" style="background-color: var(--color-surface);">
+    <div class="container">
+        <h2 class="section-title">سوالات متداول</h2>
+        {% for faq in faqs %}
+        <div class="card mb-4">
+            <h3 class="card-title">{{ faq.question }}</h3>
+            <p class="card-text">{{ faq.answer }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<section class="section">
+    <div class="container text-center">
+        <h2 class="section-title">آماده شروع پروژه خود هستید؟</h2>
+        <a href="{% url 'leads:contact' %}?service={{ service.lead_service_type }}" class="btn btn-primary">درخواست مشاوره رایگان</a>
+    </div>
+</section>
+{% endblock %}
