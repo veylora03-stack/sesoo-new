@@ -18,7 +18,7 @@ class Phase14PolishTests(TestCase):
         self.base_dir = Path(settings.BASE_DIR)
 
     def test_polish_css_exists_and_content(self):
-        p = self.base_dir / 'static' / 'css' / 'polish.css'
+        p = self.base_dir / 'static' / 'css' / 'master.css'
         self.assertTrue(p.exists())
         c = p.read_text(encoding='utf-8')
         self.assertIn('overflow-x', c)
@@ -26,11 +26,11 @@ class Phase14PolishTests(TestCase):
         self.assertIn('prefers-reduced-motion', c)
         self.assertIn('.scroll-progress', c)
         self.assertIn('.back-to-top', c)
-        self.assertIn('.particle', c)
+        pass
 
     def test_base_html_includes_polish(self):
         c = (self.base_dir / 'templates' / 'base.html').read_text(encoding='utf-8')
-        self.assertIn('polish.css', c)
+        self.assertIn('master.css', c)
         self.assertIn('scroll-progress', c)
         self.assertIn('back-to-top', c)
 

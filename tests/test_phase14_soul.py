@@ -16,7 +16,7 @@ class Phase14SoulTests(TestCase):
         self.base_dir = Path(settings.BASE_DIR)
 
     def test_premium_css(self):
-        p = self.base_dir / 'static' / 'css' / 'premium.css'
+        p = self.base_dir / 'static' / 'css' / 'master.css'
         self.assertTrue(p.exists())
         c = p.read_text(encoding='utf-8')
         self.assertIn('--grad-hero', c)
@@ -33,7 +33,7 @@ class Phase14SoulTests(TestCase):
 
     def test_base_html(self):
         c = (self.base_dir / 'templates' / 'base.html').read_text(encoding='utf-8')
-        self.assertIn('premium.css', c)
+        self.assertIn('master.css', c)
         self.assertIn('premium.js', c)
 
     def test_svgs(self):

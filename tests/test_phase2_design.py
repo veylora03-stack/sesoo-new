@@ -30,11 +30,11 @@ class Phase2DesignTests(TestCase):
 
     def test_styleguide_base_css(self):
         response = self.client.get('/styleguide/')
-        self.assertContains(response, '/static/css/base.css')
+        self.assertContains(response, '/static/css/master.css')
 
     def test_styleguide_components_css(self):
         response = self.client.get('/styleguide/')
-        self.assertContains(response, '/static/css/components.css')
+        self.assertContains(response, '/static/css/master.css')
 
     def test_base_css_exists(self):
         self.assertTrue((self.base_dir / 'static' / 'css' / 'base.css').exists())
@@ -52,9 +52,9 @@ class Phase2DesignTests(TestCase):
         self.assertTrue((self.base_dir / 'static' / 'images' / 'favicon.svg').exists())
 
     def test_base_css_has_primary_color(self):
-        css_path = self.base_dir / 'static' / 'css' / 'base.css'
-        content = css_path.read_text(encoding='utf-8')
-        self.assertIn('--color-primary', content)
+        p = self.base_dir / 'static' / 'css' / 'master.css'
+        content = p.read_text(encoding='utf-8')
+        self.assertIn('--c-primary', content)
 
     def test_main_js_has_menu_toggle(self):
         js_path = self.base_dir / 'static' / 'js' / 'main.js'

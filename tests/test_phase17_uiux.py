@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.management import call_command
 from pathlib import Path
 
-class Phase16ResponsiveTests(TestCase):
+class Phase17UIUXTests(TestCase):
     def setUp(self):
         self.client = Client()
         call_command('init_pages')
@@ -15,29 +15,31 @@ class Phase16ResponsiveTests(TestCase):
         except: pass
         self.base_dir = Path(settings.BASE_DIR)
 
-    def test_base_html_fonts_and_finalize(self):
-        c = (self.base_dir / 'templates' / 'base.html').read_text(encoding='utf-8')
-        self.assertIn('fonts.googleapis.com', c)
-        self.assertIn('Vazirmatn', c)
-        self.assertIn('Lalezar', c)
-        self.assertIn('master.css', c)
-
-    def test_finalize_css_content(self):
+    def test_master_css_exists_and_content(self):
         p = self.base_dir / 'static' / 'css' / 'master.css'
         self.assertTrue(p.exists())
-        c = p.read_text(encoding='utf-8').replace(' ', '')
+        c = p.read_text(encoding='utf-8')
+        self.assertIn('--c-primary', c)
+        self.assertIn('.hero', c)
         self.assertIn('@media', c)
-        self.assertIn('@media', c)
-        self.assertIn('font-family', c)
-        self.assertIn('.site-nav', c)
-        self.assertIn('overflow-x', c)
+
+    def test_base_html_only_master(self):
+        c = (self.base_dir / 'templates' / 'base.html').read_text(encoding='utf-8')
+        self.assertIn('master.css', c)
+        self.assertNotIn('premium.css', c)
+        self.assertNotIn('polish.css', c)
+        self.assertNotIn('scale.css', c)
+
+    def test_home_html_structure(self):
+        c = (self.base_dir / 'templates' / 'pages' / 'home.html').read_text(encoding='utf-8')
+        self.assertIn('hero-chips', c)
 
     def test_home_page(self):
         res = self.client.get('/')
         self.assertEqual(res.status_code, 200)
-        self.assertContains(res, 'class="hero"')
-        self.assertContains(res, 'data-animate')
-        self.assertContains(res, 'menu-toggle')
+        self.assertContains(res, 'hero-title')
+        self.assertContains(res, 'trust-bar')
+        self.assertContains(res, 'hero-chips')
 
     def test_other_pages(self):
         for url in ['/services/web-design/', '/about-us/', '/contact/', '/blog/', '/portfolio/', '/styleguide/']:

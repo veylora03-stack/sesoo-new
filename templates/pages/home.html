@@ -27,19 +27,13 @@
                 {% else %}
                     <img src="{% static 'images/hero-illustration.svg' %}" alt="طراحی سایت و سئو">
                 {% endif %}
-                <div class="hero-chip hero-chip--1 glass">طراحی اختصاصی</div>
+                <div class="hero-chips"><div class="hero-chip hero-chip--1 glass">طراحی اختصاصی</div>
                 <div class="hero-chip hero-chip--2 glass">سئو پایه</div>
-                <div class="hero-chip hero-chip--3 glass">سرعت بالا</div>
+                <div class="hero-chip hero-chip--3 glass">سرعت بالا</div></div>
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="trust-bar glass" data-animate data-delay="400">
-            <div class="trust-item"><span class="trust-icon">✓</span> طراحی بر اساس هدف</div>
-            <div class="trust-item"><span class="trust-icon">✓</span> تجربه کاربری روان</div>
-            <div class="trust-item"><span class="trust-icon">✓</span> سرعت و سئو پایه</div>
-            <div class="trust-item"><span class="trust-icon">✓</span> پشتیبانی و توسعه</div>
-        </div>
+    
     </div>
     <div class="wave-divider">
         <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -47,6 +41,7 @@
         </svg>
     </div>
 </section>
+
 
 {% if services %}
 <section class="section">
@@ -69,6 +64,7 @@
         </div>
     </div>
 </section>
+
 {% endif %}
 
 <section class="section section-alt">
@@ -102,6 +98,13 @@
         </div>
     </div>
 </section>
+<div class="container">
+        <div class="trust-bar glass" data-animate data-delay="400">
+            <div class="trust-item"><span class="trust-icon">✓</span> طراحی بر اساس هدف</div>
+            <div class="trust-item"><span class="trust-icon">✓</span> تجربه کاربری روان</div>
+            <div class="trust-item"><span class="trust-icon">✓</span> سرعت و سئو پایه</div>
+            <div class="trust-item"><span class="trust-icon">✓</span> پشتیبانی و توسعه</div>
+        </div>
 
 {% if process_steps %}
 <section class="section">

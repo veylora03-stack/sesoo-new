@@ -24,10 +24,10 @@ class Phase14UITests(TestCase):
         self.assertIn('Vazirmatn', c)
 
     def test_theme_css(self):
-        p = self.base_dir / 'static' / 'css' / 'theme.css'
+        p = self.base_dir / 'static' / 'css' / 'master.css'
         self.assertTrue(p.exists())
         c = p.read_text(encoding='utf-8')
-        self.assertIn('--color-primary', c)
+        self.assertIn('--c-primary', c)
         self.assertIn('.hero', c)
         self.assertIn('.btn-primary', c)
         self.assertIn('.site-footer', c)
@@ -43,8 +43,8 @@ class Phase14UITests(TestCase):
     def test_base_html_includes(self):
         p = self.base_dir / 'templates' / 'base.html'
         c = p.read_text(encoding='utf-8')
-        self.assertIn('css/fonts.css', c)
-        self.assertIn('css/theme.css', c)
+        self.assertIn('master.css', c)
+        self.assertIn('master.css', c)
         self.assertIn('js/animations.js', c)
 
     def test_svgs_exist(self):

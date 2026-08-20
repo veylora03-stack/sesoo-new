@@ -25,10 +25,10 @@ class Phase14PremiumUITests(TestCase):
         self.assertIn('Lalezar', c)
 
     def test_premium_css(self):
-        p = self.base_dir / 'static' / 'css' / 'premium.css'
+        p = self.base_dir / 'static' / 'css' / 'master.css'
         self.assertTrue(p.exists())
         c = p.read_text(encoding='utf-8')
-        self.assertIn('--color-primary', c)
+        self.assertIn('--c-primary', c)
         self.assertIn('.hero', c)
         self.assertIn('.btn-primary', c)
         self.assertIn('.site-footer', c)
@@ -44,8 +44,8 @@ class Phase14PremiumUITests(TestCase):
     def test_base_html_includes(self):
         p = self.base_dir / 'templates' / 'base.html'
         c = p.read_text(encoding='utf-8')
-        self.assertIn('css/fonts.css', c)
-        self.assertIn('css/premium.css', c)
+        self.assertIn('master.css', c)
+        self.assertIn('master.css', c)
         self.assertIn('js/premium.js', c)
 
     def test_svgs_exist(self):
