@@ -19,6 +19,7 @@
             </ul>
         </nav>
         <div class="navbar-actions">
+    {% if request.user.is_staff %}<a href="/dashboard/" class="btn btn-outline btn-sm">داشبورد</a>{% endif %}
             {% if site_settings.phone %}<a href="tel:{{ site_settings.phone }}" class="header-phone"><svg class="icon icon-sm"><use href="#i-phone"></use></svg> {{ site_settings.phone }}</a>{% endif %}
             <a href="{% url 'leads:contact' %}" class="btn btn-primary btn-sm">درخواست مشاوره</a>
             <button class="menu-toggle" data-menu-toggle aria-expanded="false" aria-label="منو">

@@ -1,3 +1,4 @@
+from apps.core import views as core_views
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
@@ -20,6 +21,7 @@ urlpatterns = [
     path('robots.txt', robots_txt, name='robots'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     path('', include('apps.pages.urls', namespace='pages')),
+    path("dashboard/", core_views.DashboardView.as_view(), name="dashboard"),
 ]
 
 handler404 = "apps.core.views.page_not_found"
