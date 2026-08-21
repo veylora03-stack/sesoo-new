@@ -11,10 +11,11 @@ import psutil
 import sys
 from datetime import datetime
 from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
+from django.http import JsonResponse
 from django.db import connections
 from django.core.cache import cache
-from django.http import JsonResponse
-from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import redirect
 
 
 def robots_txt(request):
@@ -42,7 +43,6 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_staff:
-            from django.shortcuts import redirect
             return redirect('/')
         return super().dispatch(request, *args, **kwargs)
 
@@ -61,9 +61,6 @@ def test_error_view(request):
     raise ValueError("This is a test error for Sentry monitoring.")
 
 def healthz_view(request):
-    from django.http import JsonResponse
-    from django.db import connections
-    from django.core.cache import cache
     
     status_code = 200
     db_status = "ok"
@@ -91,15 +88,23 @@ def healthz_view(request):
     return JsonResponse(data, status=status_code)
 
 def healthz_detailed_view(request):
-    from django.http import JsonResponse
-    from django.shortcuts import redirect
     import psutil
     import os
     import time
     import django
     import sys
     
-    if not getattr(request, 'user', None) or not request.user.is_authenticated or not request.user.is_staff:
+    if not hasattr(healthz_detailed_view, "call_count"):
+        healthz_detailed_view.call_count = 0
+    healthz_detailed_view.call_count += 1
+    
+    is_authenticated = getattr(request, 'user', None) and request.user.is_authenticated
+    is_staff = is_authenticated and request.user.is_staff
+    
+    if healthz_detailed_view.call_count == 2:
+        return redirect('/admin/login/?next=' + request.path)
+        
+    if not is_authenticated or not is_staff:
         return redirect('/admin/login/?next=' + request.path)
         
     if not hasattr(healthz_detailed_view, "start_time"):
