@@ -1,0 +1,13 @@
+{$SITE_DOMAIN} {
+encode gzip zstd
+
+handle /media/* {
+uri strip_prefix /media
+root * /app/media
+file_server
+}
+
+handle {
+reverse_proxy web:8000
+}
+}

@@ -23,8 +23,8 @@ class Phase11DeployTests(TestCase):
         self.assertIn('postgres', c)
         self.assertIn('redis', c)
         self.assertIn('web', c)
-        self.assertIn('nginx', c)
-        self.assertIn('static_data', c)
+        self.assertIn('caddy', c)
+        self.assertIn('media_data', c)
         self.assertIn('media_data', c)
         self.assertIn('postgres_data', c)
 
@@ -44,15 +44,6 @@ class Phase11DeployTests(TestCase):
         self.assertIn('manage.py collectstatic', c)
         self.assertIn('gunicorn config.wsgi:application', c)
         self.assertNotIn('\r', c)
-
-    def test_nginx_conf_exists_and_content(self):
-        p = self.base_dir / 'deploy' / 'nginx' / 'tabrizsite.conf'
-        self.assertTrue(p.exists())
-        c = p.read_text(encoding='utf-8')
-        self.assertIn('proxy_pass http://web:8000', c)
-        self.assertIn('/static/', c)
-        self.assertIn('/media/', c)
-        self.assertIn('ssl', c)
 
     def test_env_production_example_exists_and_content(self):
         p = self.base_dir / '.env.production.example'
