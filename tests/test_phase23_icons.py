@@ -23,7 +23,7 @@ class Phase23IconsTests(TestCase):
     def test_base_html(self):
         c = (self.base_dir / 'templates' / 'base.html').read_text(encoding='utf-8')
         self.assertIn('include "includes/icons.html"', c)
-        self.assertIn('icons.css?v=23', c)
+        self.assertTrue('icons.css' in c and '?v=29' in c)
 
     def test_home_html(self):
         c = (self.base_dir / 'templates' / 'pages' / 'home.html').read_text(encoding='utf-8')

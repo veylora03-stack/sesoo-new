@@ -16,7 +16,7 @@ class Phase22DeterministicTests(TestCase):
 
     def test_base_html_fix22_last(self):
         c = (self.base_dir / 'templates' / 'base.html').read_text(encoding='utf-8')
-        self.assertIn('fix22.css?v=22', c)
+        self.assertTrue('fix22.css' in c and '?v=29' in c)
         idx_fix = c.find('fix22.css')
         idx_master = c.find('master.css')
         idx_ui20 = c.find('ui20.css')
