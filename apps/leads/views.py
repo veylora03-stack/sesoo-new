@@ -1,3 +1,4 @@
+from apps.leads.notifications import send_lead_notification
 import time
 from django.views.generic.edit import FormView
 from django.views.generic import TemplateView
@@ -50,6 +51,7 @@ class ContactView(FormView):
         instance.source_page = self.request.POST.get('source_page') or self.request.GET.get('source', 'contact')
         
         instance.save()
+        send_lead_notification(instance)
         
         self.request.session['last_lead_at'] = time.time()
         
