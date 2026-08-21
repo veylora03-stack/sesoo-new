@@ -27,7 +27,7 @@
         {% endif %}
 
         <div class="content-area" style="line-height: 1.8; font-size: 1.1rem;">
-            {{ post.content|linebreaks }}
+            <div class="rich-content">{{ post.content|safe }}</div>
         </div>
 
         {% if post.tags.all %}

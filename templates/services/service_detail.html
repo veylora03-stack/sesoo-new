@@ -19,7 +19,7 @@
 <section class="section">
     <div class="container">
         <div class="content-area">
-            {{ service.content|linebreaks }}
+            <div class="rich-content">{{ service.content|safe }}</div>
         </div>
     </div>
 </section>

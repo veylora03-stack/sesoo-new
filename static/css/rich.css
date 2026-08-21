@@ -1,0 +1,12 @@
+.rich-content { color: var(--c-text); line-height: 2; }
+.rich-content h2, .rich-content h3, .rich-content h4 { color: var(--c-navy); margin: 1.5rem 0 0.8rem; }
+.rich-content p { margin-bottom: 1rem; }
+.rich-content ul, .rich-content ol { padding-right: 1.5rem; margin-bottom: 1rem; }
+.rich-content li { margin-bottom: 0.4rem; }
+.rich-content a { color: var(--c-primary); text-decoration: underline; }
+.rich-content img { border-radius: var(--r-md); margin: 1rem 0; max-width: 100%; height: auto; }
+.rich-content blockquote { border-right: 4px solid var(--c-primary); padding: 0.8rem 1.2rem; background: var(--c-primary-light); border-radius: var(--r-sm); margin: 1rem 0; color: var(--c-navy); }
+.rich-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.rich-content td, .rich-content th { border: 1px solid var(--c-border); padding: 0.6rem; }
+.rich-content figure { margin: 1rem 0; }
+.rich-content figcaption { color: var(--c-muted); font-size: 0.85rem; text-align: center; }

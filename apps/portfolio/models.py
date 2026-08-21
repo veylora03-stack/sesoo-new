@@ -1,3 +1,4 @@
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.urls import reverse
 
@@ -34,10 +35,10 @@ class Project(models.Model):
     client_name = models.CharField(max_length=200, blank=True)
     industry = models.CharField(max_length=200, blank=True)
     cover_image = models.ImageField(upload_to='portfolio/covers/', null=True, blank=True)
-    summary = models.TextField(blank=True)
-    challenge = models.TextField(blank=True)
-    solution = models.TextField(blank=True)
-    result = models.TextField(blank=True)
+    summary = RichTextUploadingField(blank=True)
+    challenge = RichTextUploadingField(blank=True)
+    solution = RichTextUploadingField(blank=True)
+    result = RichTextUploadingField(blank=True)
     live_url = models.URLField(blank=True)
     technologies = models.ManyToManyField(ProjectTechnology, related_name='projects', blank=True)
     is_featured = models.BooleanField(default=False)

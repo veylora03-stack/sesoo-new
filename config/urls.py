@@ -1,6 +1,6 @@
 from apps.core import views as core_views
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, include, include, include
 from django.views.generic import TemplateView
 from django.http import JsonResponse
 from django.contrib.sitemaps.views import sitemap
@@ -24,5 +24,7 @@ urlpatterns = [
     path("dashboard/", core_views.DashboardView.as_view(), name="dashboard"),
 ]
 
+
 handler404 = "apps.core.views.page_not_found"
 handler500 = "apps.core.views.server_error"
+urlpatterns += [path("ckeditor/", include("ckeditor_uploader.urls"))]

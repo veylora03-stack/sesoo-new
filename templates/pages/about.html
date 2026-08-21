@@ -9,7 +9,7 @@
     <div class="container">
         <h1 class="section-title">{{ about.title }}</h1>
         <div class="content-area">
-            {{ about.intro|linebreaks }}
+            <div class="rich-content">{{ about.intro|safe }}</div>
         </div>
     </div>
 </section>
@@ -18,7 +18,7 @@
 <section class="section" style="background-color: var(--color-surface);">
     <div class="container">
         <h2 class="section-title">{{ about.story_title }}</h2>
-        <p>{{ about.story_content|linebreaks }}</p>
+        <p><div class="rich-content">{{ about.story_content|safe }}</div></p>
     </div>
 </section>
 {% endif %}
@@ -28,7 +28,7 @@
     <section class="section">
         <div class="container">
             <h2 class="section-title">{{ about.mission_title }}</h2>
-            <p>{{ about.mission_content|linebreaks }}</p>
+            <p><div class="rich-content">{{ about.mission_content|safe }}</div></p>
         </div>
     </section>
     {% endif %}
@@ -36,7 +36,7 @@
     <section class="section">
         <div class="container">
             <h2 class="section-title">{{ about.vision_title }}</h2>
-            <p>{{ about.vision_content|linebreaks }}</p>
+            <p><div class="rich-content">{{ about.vision_content|safe }}</div></p>
         </div>
     </section>
     {% endif %}

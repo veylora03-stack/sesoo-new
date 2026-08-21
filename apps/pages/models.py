@@ -1,3 +1,4 @@
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.urls import reverse
 
@@ -37,13 +38,13 @@ class HomePage(models.Model):
 
 class AboutPage(models.Model):
     title = models.CharField(max_length=200, default="درباره تبریز سایت")
-    intro = models.TextField(blank=True)
+    intro = RichTextUploadingField(blank=True)
     story_title = models.CharField(max_length=200, blank=True)
-    story_content = models.TextField(blank=True)
+    story_content = RichTextUploadingField(blank=True)
     mission_title = models.CharField(max_length=200, blank=True)
-    mission_content = models.TextField(blank=True)
+    mission_content = RichTextUploadingField(blank=True)
     vision_title = models.CharField(max_length=200, blank=True)
-    vision_content = models.TextField(blank=True)
+    vision_content = RichTextUploadingField(blank=True)
     image = models.ImageField(upload_to="pages/about/", null=True, blank=True)
     seo_title = models.CharField(max_length=255, blank=True)
     seo_description = models.TextField(blank=True)
@@ -65,7 +66,7 @@ class AboutPage(models.Model):
 class LegalPage(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
-    content = models.TextField(blank=True)
+    content = RichTextUploadingField(blank=True)
     seo_title = models.CharField(max_length=255, blank=True)
     seo_description = models.TextField(blank=True)
     order = models.PositiveIntegerField(default=0)

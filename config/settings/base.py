@@ -12,6 +12,8 @@ if os.environ.get('ALLOWED_HOSTS'):
     ALLOWED_HOSTS = [host.strip() for host in os.environ.get('ALLOWED_HOSTS').split(',')]
 
 INSTALLED_APPS = [
+    'ckeditor',
+    'ckeditor_uploader',
     'axes',
     'django.contrib.sites',
     'django.contrib.sitemaps',
@@ -126,3 +128,18 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@tabrizsite.local")
 LEAD_NOTIFY_EMAIL = os.getenv("LEAD_NOTIFY_EMAIL", "")
+
+
+# TABRIZ PHASE27 CKEDITOR
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_CONFIGS = {
+    "default": {
+        "toolbar": "full",
+        "language": "fa",
+        "contentsLangDirection": "rtl",
+        "height": 320,
+        "autoParagraph": True,
+        "removeDialogTabs": "image:advanced;link:advanced",
+    },
+}

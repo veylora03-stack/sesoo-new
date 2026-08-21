@@ -1,3 +1,4 @@
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.urls import reverse
 
@@ -23,7 +24,7 @@ class ServicePage(models.Model):
     short_description = models.TextField(blank=True)
     hero_title = models.CharField(max_length=255, blank=True)
     hero_subtitle = models.CharField(max_length=255, blank=True)
-    content = models.TextField(blank=True)
+    content = RichTextUploadingField(blank=True)
     cover_image = models.ImageField(upload_to="services/pages/", null=True, blank=True)
     seo_title = models.CharField(max_length=255, blank=True)
     seo_description = models.TextField(blank=True)
