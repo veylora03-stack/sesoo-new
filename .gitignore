@@ -31,3 +31,6 @@ Thumbs.db
 # Node
 node_modules/
 npm-debug.log
+
+# Nginx config (deprecated - using Caddy instead)
+deploy/nginx/
