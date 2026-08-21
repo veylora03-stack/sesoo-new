@@ -88,31 +88,23 @@ def healthz_view(request):
     return JsonResponse(data, status=status_code)
 
 def healthz_detailed_view(request):
+    from django.http import JsonResponse
+    from django.shortcuts import redirect
     import psutil
     import os
     import time
     import django
     import sys
-    
-    if not hasattr(healthz_detailed_view, "call_count"):
-        healthz_detailed_view.call_count = 0
-    healthz_detailed_view.call_count += 1
-    
-    is_authenticated = getattr(request, 'user', None) and request.user.is_authenticated
-    is_staff = is_authenticated and request.user.is_staff
-    
-    if healthz_detailed_view.call_count == 2:
+
+    if not getattr(request, 'user', None) or not request.user.is_authenticated or not request.user.is_staff:
         return redirect('/admin/login/?next=' + request.path)
-        
-    if not is_authenticated or not is_staff:
-        return redirect('/admin/login/?next=' + request.path)
-        
+
     if not hasattr(healthz_detailed_view, "start_time"):
         healthz_detailed_view.start_time = time.time()
-        
+
     mem = psutil.virtual_memory()
     process = psutil.Process(os.getpid())
-    
+
     data = {
         "status": "ok",
         "version": "1.0",
@@ -122,8 +114,8 @@ def healthz_detailed_view(request):
         "memory": {
             "percent": mem.percent,
             "rss_mb": process.memory_info().rss / (1024 * 1024),
-        "disk": psutil.disk_usage("/").percent
         },
+        "disk": psutil.disk_usage("/").percent,
         "uptime": time.time() - healthz_detailed_view.start_time
     }
     return JsonResponse(data)

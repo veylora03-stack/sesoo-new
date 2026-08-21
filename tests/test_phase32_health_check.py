@@ -64,7 +64,7 @@ class Phase32HealthCheckTests(TestCase):
         self.assertEqual(response.status_code, 302)  # Redirect to login
         
         # Normal user
-        self.client.force_login(User.objects.create_superuser('admin32', 'a@a.com', 'pwd'))
+        self.client.force_login(User.objects.create_user('normal32', 'n@n.com', 'pwd'))
         response = self.client.get('/healthz/detailed/')
         self.assertEqual(response.status_code, 302)  # Redirect to login
         

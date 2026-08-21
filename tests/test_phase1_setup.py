@@ -11,7 +11,7 @@ class Phase1SetupTests(TestCase):
 
     def test_healthz_content(self):
         response = self.client.get('/healthz/')
-        self.assertJSONEqual(response.content, {"status": "ok"})
+        self.assertJSONEqual(response.content, {"status": "healthy", "database": "ok", "cache": "ok"})
 
     def test_admin_redirect(self):
         response = self.client.get('/admin/')
