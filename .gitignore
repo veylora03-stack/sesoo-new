@@ -9,3 +9,25 @@ staticfiles/
 .backups/
 .env.production
 .env.local
+# Phase 36 additions
+# Python
+*.pyo
+*.pyd
+.Python
+# Django
+*.log
+# OS
+.DS_Store
+Thumbs.db
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+# Environment
+# Database
+*.sqlite3
+# Node
+node_modules/
+npm-debug.log

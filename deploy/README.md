@@ -24,3 +24,20 @@ To schedule the backup script to run automatically every day at 2:00 AM:
 ./deploy/cron-setup.sh
 ```
 This will add an idempotent cron job and configure `logrotate` to manage the backup logs.
+## پاکسازی فایل‌های اضافی
+
+برای حذف فایل‌های cache و اضافی:
+
+```bash
+./deploy/cleanup.sh
+```
+
+این اسکریپت حذف می‌کند:
+- __pycache__/ و *.pyc
+- *.log
+- .DS_Store و Thumbs.db
+- فایل‌های swap ادیتور
+
+## توجه: nginx حذف شده
+
+nginx دیگر استفاده نمی‌شود. به جای آن از Caddy استفاده می‌کنیم که SSL خودکار دارد.
