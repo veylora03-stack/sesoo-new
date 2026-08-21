@@ -40,3 +40,8 @@
 
 10. **چک‌لیست امنیتی**
     قبل از تحویل نهایی، فایل `DEPLOYMENT_CHECKLIST.md` را بررسی کنید.
+## Migrations (Phase 31)
+
+- Migration ها حالا به‌صورت خودکار قبل از startup اجرا می‌شوند: سرویس جداگانه `migrate` در docker-compose.yml فقط یک‌بار اجرا می‌شود (`restart: "no"`) و سرویس `web` با `condition: service_completed_successfully` منتظر آن می‌ماند؛ سرویس `db` نیز healthcheck دارد.
+- برای اجرای دستی migration در production:
+  `./deploy/run-migrations.sh`

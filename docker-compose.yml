@@ -8,9 +8,22 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   redis:
     image: redis:7-alpine
     restart: unless-stopped
+  migrate:
+    build: .
+    command: python manage.py migrate --noinput
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env.production
+    restart: "no"
   web:
     build: .
     restart: unless-stopped
@@ -18,9 +31,13 @@ services:
     volumes:
       - media_data:/app/media
     depends_on:
-      - db
-      - redis
-    command: sh -c "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 60"
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 60
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped

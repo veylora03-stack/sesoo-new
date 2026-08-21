@@ -2,12 +2,10 @@
 
 
 class AuthenticatedUserCacheBypass:
-    """Bypass the site-wide page cache for authenticated users,
-    non-idempotent HTTP methods and the Django test client.
+    """Bypass the site-wide page cache for authenticated users and non-idempotent methods.
 
-    NOTE: this middleware must be placed AFTER
-    django.contrib.auth.middleware.AuthenticationMiddleware, but the
-    getattr() guard below also makes it safe regardless of ordering.
+    Safe to place anywhere in MIDDLEWARE: guards against a missing request.user
+    (e.g. when positioned before AuthenticationMiddleware).
     """
 
     def __init__(self, get_response):
@@ -17,14 +15,6 @@ class AuthenticatedUserCacheBypass:
         user = getattr(request, "user", None)
         if user is not None and getattr(user, "is_authenticated", False):
             request._cache_update_cache = False
-
         if request.method not in ("GET", "HEAD"):
             request._cache_update_cache = False
-
-        try:
-            if request.get_host() == "testserver":
-                request._cache_update_cache = False
-        except Exception:
-            pass
-
         return self.get_response(request)
