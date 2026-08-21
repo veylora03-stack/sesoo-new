@@ -3,11 +3,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
-if not SECRET_KEY and os.environ.get('DJANGO_ENV') == 'production':
-    raise ValueError("SECRET_KEY must be set in production environment.")
-elif not SECRET_KEY:
-    SECRET_KEY = 'django-insecure-dev-only-key-' + 'x' * 30
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key-for-development-only')
 
 DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 't')
 

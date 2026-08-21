@@ -37,6 +37,7 @@ services:
         condition: service_completed_successfully
       redis:
         condition: service_started
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 60
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
@@ -58,4 +59,5 @@ volumes:
   media_data:
   caddy_data:
   backups_data:
+      - backups_data:/app/backups
   caddy_config:

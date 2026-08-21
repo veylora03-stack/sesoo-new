@@ -83,8 +83,6 @@ if REDIS_URL:
 MIDDLEWARE = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'apps.core.middleware.AuthenticatedUserCacheBypass',
-    'axes.middleware.AxesMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
