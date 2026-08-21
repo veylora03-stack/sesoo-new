@@ -58,4 +58,6 @@ volumes:
   postgres_data:
   media_data:
   caddy_data:
+  backups_data:
+      - backups_data:/app/backups
   caddy_config:
