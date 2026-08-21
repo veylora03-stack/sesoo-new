@@ -5,13 +5,14 @@ from django.views.generic import TemplateView
 from django.http import JsonResponse
 from django.contrib.sitemaps.views import sitemap
 from apps.core.sitemaps import sitemaps
-from apps.core.views import robots_txt
+from apps.core.views import healthz_detailed_view, robots_txt
 
 def healthz_view(request):
     return JsonResponse({"status": "ok"})
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('healthz/detailed/', healthz_detailed_view, name='healthz_detailed'),
     path('healthz/', healthz_view, name='healthz'),
     path('styleguide/', TemplateView.as_view(template_name='pages/styleguide.html'), name='styleguide'),
     path('contact/', include('apps.leads.urls', namespace='leads')),
