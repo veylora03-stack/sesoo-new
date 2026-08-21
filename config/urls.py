@@ -7,9 +7,7 @@ from django.http import JsonResponse
 from django.contrib.sitemaps.views import sitemap
 from apps.core.sitemaps import sitemaps
 from apps.core.views import test_error_view, healthz_detailed_view, robots_txt
-
-def healthz_view(request):
-    return JsonResponse({"status": "ok"})
+from apps.core.views import healthz_view, healthz_detailed_view
 
 urlpatterns = [
     path('test-error/', test_error_view, name='test_error'),

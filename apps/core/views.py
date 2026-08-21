@@ -116,7 +116,8 @@ def healthz_detailed_view(request):
         "cpu_percent": psutil.cpu_percent(),
         "memory": {
             "percent": mem.percent,
-            "rss_mb": process.memory_info().rss / (1024 * 1024)
+            "rss_mb": process.memory_info().rss / (1024 * 1024),
+        "disk": psutil.disk_usage("/").percent
         },
         "uptime": time.time() - healthz_detailed_view.start_time
     }
