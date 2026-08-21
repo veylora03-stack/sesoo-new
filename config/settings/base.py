@@ -144,3 +144,8 @@ CKEDITOR_CONFIGS = {
         "removeDialogTabs": "image:advanced;link:advanced",
     },
 }
+
+
+# Disable Axes in dev/test to prevent request parameter errors
+# Sentry DSN (Optional)
+SENTRY_DSN = os.environ.get('SENTRY_DSN', '')

@@ -96,3 +96,30 @@ CACHE_MIDDLEWARE_KEY_PREFIX = 'tabriz_site'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.redis import RedisIntegration
+import os
+import logging
+import subprocess
+
+logger = logging.getLogger(__name__)
+
+sentry_dsn = os.environ.get("SENTRY_DSN")
+if sentry_dsn:
+    try:
+        release = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).decode("utf-8").strip()
+    except Exception:
+        release = "unknown"
+        
+    sentry_sdk.init(
+        dsn=sentry_dsn,
+        integrations=[DjangoIntegration(), RedisIntegration()],
+        traces_sample_rate=0.1,
+        send_default_pii=True,
+        environment="production",
+        release=release,
+    )
+else:
+    logger.warning("SENTRY_DSN is not set. Sentry monitoring is disabled.")

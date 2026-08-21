@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 import re
 from pathlib import Path
 from django.test import TestCase, Client

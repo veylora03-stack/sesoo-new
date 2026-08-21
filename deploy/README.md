@@ -45,3 +45,9 @@
 - Migration ها حالا به‌صورت خودکار قبل از startup اجرا می‌شوند: سرویس جداگانه `migrate` در docker-compose.yml فقط یک‌بار اجرا می‌شود (`restart: "no"`) و سرویس `web` با `condition: service_completed_successfully` منتظر آن می‌ماند؛ سرویس `db` نیز healthcheck دارد.
 - برای اجرای دستی migration در production:
   `./deploy/run-migrations.sh`
+## Sentry Error Monitoring
+
+1. برای ساخت اکانت Sentry به [sentry.io](https://sentry.io) مراجعه کنید.
+2. یک پروژه جدید Django بسازید و DSN آن را کپی کنید.
+3. مقدار `SENTRY_DSN` را در فایل `.env.production` تنظیم کنید.
+   اگر این متغیر خالی باشد، Sentry غیرفعال می‌ماند.

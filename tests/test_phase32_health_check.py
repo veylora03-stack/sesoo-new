@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 import time
 from unittest.mock import patch, MagicMock
 from django.test import TestCase, Client
@@ -63,12 +64,12 @@ class Phase32HealthCheckTests(TestCase):
         self.assertEqual(response.status_code, 302)  # Redirect to login
         
         # Normal user
-        self.client.force_login(user)
+        self.client.force_login(User.objects.create_superuser('admin32', 'a@a.com', 'pwd'))
         response = self.client.get('/healthz/detailed/')
         self.assertEqual(response.status_code, 302)  # Redirect to login
         
         # Staff user
-        self.client.force_login(user)
+        self.client.force_login(User.objects.create_superuser('admin32', 'a@a.com', 'pwd'))
         response = self.client.get('/healthz/detailed/')
         self.assertEqual(response.status_code, 200)
         data = response.json()
@@ -78,7 +79,7 @@ class Phase32HealthCheckTests(TestCase):
     
     def test_healthz_detailed_includes_system_info(self):
         """Detailed health check includes system information"""
-        self.client.force_login(user)
+        self.client.force_login(User.objects.create_superuser('admin32', 'a@a.com', 'pwd'))
         response = self.client.get('/healthz/detailed/')
         data = response.json()
         self.assertIn('python_version', data)
