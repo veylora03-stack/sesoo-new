@@ -65,8 +65,8 @@ python manage.py runserver
 ```bash
 cp .env.production.example .env.production
 # .env.production را ویرایش کنید (SECRET_KEY, ALLOWED_HOSTS, DB_PASSWORD)
-docker compose --env-file .env.production up -d
-docker compose --env-file .env.production exec web python manage.py createsuperuser
+docker compose up -d
+docker compose exec web python manage.py createsuperuser
 ```
 
 ## 🏗️ ساختار پروژه

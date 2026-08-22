@@ -4,13 +4,12 @@ services:
     restart: unless-stopped
     env_file: .env.production
     environment:
-      POSTGRES_DB: ${DB_NAME:-tabriz_site}
-      POSTGRES_USER: ${DB_USER:-tabriz_user}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set}
+      POSTGRES_DB: tabriz_site
+      POSTGRES_USER: tabriz_user
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U tabriz_user -d tabriz_site"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -45,8 +44,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    environment:
-      SITE_DOMAIN: ${SITE_DOMAIN:-localhost}
     volumes:
       - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
       - media_data:/app/media:ro
