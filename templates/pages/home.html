@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{% if site_settings and site_settings.default_seo_title %}{{ site_settings.default_seo_title }}{% elif home.hero_title %}{{ home.hero_title }}{% else %}تبریز سایت{% endif %}{% endblock %}
+{% block title %}{% if site_settings and site_settings.default_seo_title %}{{ site_settings.default_seo_title }}{% elif home.hero_title %}{{ home.hero_title }}{% else %}Sesoo{% endif %}{% endblock %}
 {% block meta_description %}{% if site_settings and site_settings.default_seo_description %}{{ site_settings.default_seo_description }}{% else %}{{ home.hero_subtitle|striptags|truncatewords:20 }}{% endif %}{% endblock %}
 
 {% block content %}
@@ -12,8 +12,8 @@
     <div class="blob blob--peach"></div>
     <div class="container hero-inner">
         <div class="hero-content" data-animate>
-            <span class="hero-badge badge glass"><span class="badge-dot"></span> آژانس دیجیتال تبریز سایت</span>
-            <h1 class="hero-title">{{ home.hero_title|default:"طراحی سایت و سئو" }} <span class="text-gradient">تبریز</span></h1>
+            <span class="hero-badge badge glass"><span class="badge-dot"></span> آژانس دیجیتال Sesoo</span>
+            <h1 class="hero-title">{{ home.hero_title|default:"طراحی سایت و سئو" }} <span class="text-gradient">Sesoo</span></h1>
             <p class="hero-subtitle">{{ home.hero_subtitle|linebreaksbr|default:"ما با ترکیب خلاقیت و مهندسی، وب‌سایتی می‌سازیم که واقعاً برای کسب‌وکار شما کار کند." }}</p>
             <div class="hero-actions">
                 <a href="{{ home.primary_cta_url|default:'/contact/' }}" class="btn btn-primary btn-lg">{{ home.primary_cta_text|default:"درخواست مشاوره رایگان" }}</a>
@@ -75,7 +75,7 @@
     <div class="blob blob--cyan" style="top: 10%; left: -10%;"></div>
     <div class="container">
         <div class="section-head" data-animate>
-            <h2 class="section-title">چرا تبریز سایت؟</h2>
+            <h2 class="section-title">چرا Sesoo؟</h2>
             <p class="section-subtitle">ما با ترکیب خلاقیت و مهندسی، وب‌سایتی می‌سازیم که واقعاً برای کسب‌وکار شما کار کند.</p>
         </div>
         <div class="grid grid-4">
@@ -114,7 +114,7 @@
 <section class="section">
     <div class="container">
         <div class="section-head" data-animate>
-            <h2 class="section-title">فرآیند همکاری با تبریز سایت</h2>
+            <h2 class="section-title">فرآیند همکاری با Sesoo</h2>
             <p class="section-subtitle">مسیر شفاف و حرفه‌ای ما برای تبدیل ایده‌های شما به واقعیت</p>
         </div>
         <div class="process">

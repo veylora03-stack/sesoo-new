@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% block title %}وبلاگ | تبریز سایت{% endblock %}
+{% block title %}وبلاگ | Sesoo{% endblock %}
 {% block meta_description %}مقالات آموزشی طراحی سایت و سئو{% endblock %}
 {% block content %}
 <section class="page-hero">
   <div class="container">
-    <h1 class="page-title">{{ page_title|default:"مقالات تبریز سایت" }}</h1>
+    <h1 class="page-title">{{ page_title|default:"مقالات Sesoo" }}</h1>
     <p class="page-subtitle">آموزش‌های کاربردی طراحی سایت، سئو و رشد دیجیتال</p>
     <form class="search-box" method="get" action="{% url 'blog:list' %}">
       <input class="input" type="search" name="q" value="{{ q|default:'' }}" placeholder="جستجو در مقالات...">

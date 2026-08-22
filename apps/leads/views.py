@@ -51,7 +51,7 @@ class ContactView(FormView):
 
         record_lead_submission(self.request)
 
-        messages.success(self.request, "درخواست شما با موفقیت ثبت شد. کارشناسان تبریز سایت به‌زودی با شما تماس می‌گیرند.")
+        messages.success(self.request, "درخواست شما با موفقیت ثبت شد. کارشناسان Sesoo به‌زودی با شما تماس می‌گیرند.")
         return super().form_valid(form)
 
 

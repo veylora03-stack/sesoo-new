@@ -70,7 +70,7 @@ class Phase14PremiumUITests(TestCase):
             self.assertContains(res, home.hero_title)
         self.assertContains(res, 'data-animate')
         self.assertContains(res, 'درخواست مشاوره')
-        self.assertContains(res, 'چرا تبریز سایت')
+        self.assertContains(res, 'چرا Sesoo')
 
     def test_other_pages(self):
         urls = ['/services/', '/services/web-design/', '/about-us/', '/contact/', '/styleguide/']

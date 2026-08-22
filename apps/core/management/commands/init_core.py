@@ -22,8 +22,8 @@ class Command(BaseCommand):
 
         if not FAQ.objects.exists():
             FAQ.objects.create(
-                question="تبریز سایت چه خدماتی ارائه می‌دهد؟",
-                answer="تبریز سایت خدمات طراحی سایت، سئو، بهینه‌سازی و پشتیبانی ارائه می‌دهد. این متن به‌زودی با محتوای واقعی جایگزین می‌شود.",
+                question="Sesoo چه خدماتی ارائه می‌دهد؟",
+                answer="Sesoo خدمات طراحی سایت، سئو، بهینه‌سازی و پشتیبانی ارائه می‌دهد. این متن به‌زودی با محتوای واقعی جایگزین می‌شود.",
                 related_page="general",
                 is_active=True
             )

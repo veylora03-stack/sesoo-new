@@ -1,14 +1,14 @@
 #!/bin/sh
 set -e
 
-# NOTE: Migrations are handled by the 'migrate' service in docker-compose.yml.
-# If running standalone (without compose), uncomment the block below:
-#
-# echo "Running database migrations..."
-# until python manage.py migrate --noinput; do
-#   echo "Database unavailable, retrying in 2 seconds..."
-#   sleep 2
-# done
+# If DB_HOST is set, try running migrations (works standalone or with compose)
+if [ -n "$DB_HOST" ]; then
+    echo "Running database migrations..."
+    until python manage.py migrate --noinput 2>/dev/null; do
+      echo "Database unavailable, retrying in 2 seconds..."
+      sleep 2
+    done
+fi
 
 echo "Collecting static files..."
 python manage.py collectstatic --noinput

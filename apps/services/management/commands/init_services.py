@@ -14,7 +14,7 @@ class Command(BaseCommand):
             defaults={
                 'title': 'طراحی سایت',
                 'short_description': 'طراحی سایت شرکتی، فروشگاهی و اختصاصی با تمرکز بر سرعت، امنیت و سئو.',
-                'hero_title': 'طراحی سایت حرفه‌ای در تبریز',
+                'hero_title': 'طراحی سایت حرفه‌ای در Sesoo',
                 'hero_subtitle': 'ساخت وب‌سایت سریع، امن و قابل توسعه برای کسب‌وکار شما',
                 'content': 'این متنplaceholder برای صفحه طراحی سایت است و بعداً با محتوای واقعی جایگزین می‌شود.',
                 'lead_service_type': 'web_design',
@@ -29,7 +29,7 @@ class Command(BaseCommand):
             defaults={
                 'title': 'سئو سایت',
                 'short_description': 'خدمات سئو تکنیکال، بهینه‌سازی محتوا و رشد ورودی گوگل.',
-                'hero_title': 'خدمات سئو سایت در تبریز',
+                'hero_title': 'خدمات سئو سایت در Sesoo',
                 'hero_subtitle': 'افزایش دیده شدن در گوگل با سئوی اصولی و قابل اندازه‌گیری',
                 'content': 'این متنplaceholder برای صفحه سئو سایت است و بعداً با محتوای واقعی جایگزین می‌شود.',
                 'lead_service_type': 'seo',

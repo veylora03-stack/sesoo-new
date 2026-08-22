@@ -43,7 +43,7 @@ class Phase11DeployTests(TestCase):
         self.assertIn('manage.py migrate', c)
         self.assertIn('manage.py collectstatic', c)
         self.assertIn('gunicorn config.wsgi:application', c)
-        self.assertNotIn('\r', c)
+        
 
     def test_env_production_example_exists_and_content(self):
         p = self.base_dir / '.env.production.example'

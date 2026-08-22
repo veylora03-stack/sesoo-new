@@ -10,10 +10,19 @@
         -Server
     }
 
-    # Media files
+    # Static files (pre-collected by entrypoint, served via WhiteNoise)
+    handle /static/* {
+        uri strip_prefix /static
+        root * /srv/static
+        file_server {
+            expires 30d
+        }
+    }
+
+    # Media files (uploaded via admin, stored in media_data volume)
     handle /media/* {
         uri strip_prefix /media
-        root * /app/media
+        root * /srv/media
         file_server {
             expires 30d
         }

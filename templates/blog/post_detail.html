@@ -4,7 +4,7 @@
 {% endblock %}
 {% load static %}
 
-{% block title %}{% if post.seo_title %}{{ post.seo_title }}{% else %}{{ post.title }} | تبریز سایت{% endif %}{% endblock %}
+{% block title %}{% if post.seo_title %}{{ post.seo_title }}{% else %}{{ post.title }} | Sesoo{% endif %}{% endblock %}
 {% block meta_description %}{% if post.seo_description %}{{ post.seo_description }}{% else %}{{ post.excerpt }}{% endif %}{% endblock %}
 
 {% block content %}
@@ -15,7 +15,7 @@
         <div class="mb-4" style="display: flex; gap: var(--space-3); flex-wrap: wrap; color: var(--color-muted); font-size: 0.9rem;">
             <a href="{{ post.category.get_absolute_url }}" style="color: var(--color-primary);">{{ post.category.title }}</a>
             <span>|</span>
-            <span>{{ post.author_name|default:"تبریز سایت" }}</span>
+            <span>{{ post.author_name|default:"Sesoo" }}</span>
             <span>|</span>
             <span>{{ post.published_at|date:"Y/m/d" }}</span>
             <span>|</span>

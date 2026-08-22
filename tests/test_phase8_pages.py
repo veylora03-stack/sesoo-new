@@ -41,15 +41,15 @@ class Phase8PagesTests(TestCase):
         call_command('init_pages')
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'طراحی سایت و سئو در تبریز')
+        self.assertContains(response, 'Web Design')
         self.assertContains(response, 'درخواست مشاوره')
-        self.assertContains(response, 'تبریز سایت')
+        self.assertContains(response, 'Sesoo')
 
     def test_about_view(self):
         call_command('init_pages')
         response = self.client.get('/about-us/')
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'درباره تبریز سایت')
+        self.assertContains(response, 'درباره Sesoo')
 
     def test_legal_views(self):
         call_command('init_pages')

@@ -3,14 +3,14 @@ from django.db import models
 from django.urls import reverse
 
 class HomePage(models.Model):
-    hero_title = models.CharField(max_length=255, default="طراحی سایت و سئو در تبریز")
+    hero_title = models.CharField(max_length=255, default="Web Design & SEO")
     hero_subtitle = models.TextField(blank=True)
     hero_image = models.ImageField(upload_to="pages/home/", null=True, blank=True)
     primary_cta_text = models.CharField(max_length=100, default="درخواست مشاوره رایگان")
     primary_cta_url = models.CharField(max_length=255, default="/contact/")
     secondary_cta_text = models.CharField(max_length=100, blank=True)
     secondary_cta_url = models.CharField(max_length=255, blank=True)
-    services_heading = models.CharField(max_length=200, default="خدمات تبریز سایت")
+    services_heading = models.CharField(max_length=200, default="Our Services")
     services_subheading = models.TextField(blank=True)
     portfolio_heading = models.CharField(max_length=200, default="نمونه‌کارهای منتخب")
     portfolio_subheading = models.TextField(blank=True)
@@ -26,7 +26,7 @@ class HomePage(models.Model):
 
     @classmethod
     def load(cls):
-        obj, _ = cls.objects.get_or_create(pk=1, defaults={"hero_title": "طراحی سایت و سئو در تبریز"})
+        obj, _ = cls.objects.get_or_create(pk=1, defaults={"hero_title": "Web Design & SEO"})
         return obj
 
     def __str__(self):
@@ -37,7 +37,7 @@ class HomePage(models.Model):
         verbose_name_plural = "صفحه اصلی"
 
 class AboutPage(models.Model):
-    title = models.CharField(max_length=200, default="درباره تبریز سایت")
+    title = models.CharField(max_length=200, default="About Sesoo")
     intro = CKEditor5Field(blank=True)
     story_title = models.CharField(max_length=200, blank=True)
     story_content = CKEditor5Field(blank=True)
@@ -53,7 +53,7 @@ class AboutPage(models.Model):
 
     @classmethod
     def load(cls):
-        obj, _ = cls.objects.get_or_create(pk=1, defaults={"title": "درباره تبریز سایت"})
+        obj, _ = cls.objects.get_or_create(pk=1, defaults={"title": "About Sesoo"})
         return obj
 
     def __str__(self):

@@ -133,7 +133,7 @@ python manage.py test
 bash deploy/backup.sh
 
 # Restore
-bash deploy/restore.sh /path/to/backup.tar.gz
+bash deploy/restore.sh
 ```
 
 ## CI/CD

@@ -107,7 +107,7 @@ services:
       - web
 
   # Run manually: docker compose run --rm backup
-  # Or via cron on host: 0 2 * * * cd /path/to/project && docker compose run --rm backup
+  # Or via host cron: 0 2 * * * cd /path/to/project && docker compose run --rm backup >> backups/cron.log 2>&1
   backup:
     image: postgres:16-alpine
     restart: "no"
@@ -131,10 +131,18 @@ services:
       echo '[$$(date)] Starting backup...' &&
       echo '[$$(date)] Dumping database...' &&
       PGPASSWORD=$$POSTGRES_PASSWORD pg_dump -U $$POSTGRES_USER -h db $$POSTGRES_DB > /backups/db_$$DATE.sql &&
-      echo '[$$(date)] Database backup: db_$$DATE.sql' &&
+      DB_SIZE=$$(wc -c < /backups/db_$$DATE.sql | tr -d ' ') &&
+      if [ \"$$DB_SIZE\" -lt 100 ]; then
+        echo '[$$(date)] ERROR: Database dump is empty or corrupt ($$DB_SIZE bytes)' &&
+        rm -f /backups/db_$$DATE.sql &&
+        exit 1
+      fi &&
+      echo '[$$(date)] Database backup: db_$$DATE.sql ($$DB_SIZE bytes)' &&
       echo '[$$(date)] Backing up media...' &&
       tar -czf /backups/media_$$DATE.tar.gz -C /media . &&
-      echo '[$$(date)] Media backup: media_$$DATE.tar.gz' &&
+      MEDIA_SIZE=$$(wc -c < /backups/media_$$DATE.tar.gz | tr -d ' ') &&
+      echo '[$$(date)] Media backup: media_$$DATE.tar.gz ($$MEDIA_SIZE bytes)' &&
+      echo '[$$(date)] Cleaning old backups (>30 days)...' &&
       find /backups/ -type f -mtime +30 -delete 2>/dev/null || true &&
       echo '[$$(date)] Backup completed. Files:' &&
       ls -lh /backups/*_$$DATE* 2>/dev/null

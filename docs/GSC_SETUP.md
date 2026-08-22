@@ -7,7 +7,7 @@
 3. **دریافت متا تگ**
    در بخش Verification، گزینه HTML tag را انتخاب کرده و کد را کپی کنید.
 4. **وارد کردن در پنل ادمین**
-   به پنل ادمین تبریز سایت بروید. مدل `SiteSettings` را باز کنید و مقدار کد را در فیلد `google_search_console_verification` قرار دهید و ذخیره کنید.
+   به پنل ادمین Sesoo بروید. مدل `SiteSettings` را باز کنید و مقدار کد را در فیلد `google_search_console_verification` قرار دهید و ذخیره کنید.
 5. **بررسی فایل‌ها**
    مطمئن شوید که `/robots.txt` و `/sitemap.xml` بدون خطا و با کد 200 در دسترس هستند.
 6. **ثبت Sitemap**

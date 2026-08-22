@@ -1,7 +1,7 @@
 from django.db import models
 
 class SiteSettings(models.Model):
-    brand_name = models.CharField(max_length=200, default="تبریز سایت")
+    brand_name = models.CharField(max_length=200, default="Sesoo")
     brand_slug = models.SlugField(max_length=200, blank=True, allow_unicode=True)
     logo = models.ImageField(upload_to="core/site/", null=True, blank=True)
     favicon = models.ImageField(upload_to="core/site/", null=True, blank=True)
@@ -27,7 +27,7 @@ class SiteSettings(models.Model):
 
     @classmethod
     def load(cls):
-        obj, _ = cls.objects.get_or_create(pk=1, defaults={"brand_name": "تبریز سایت"})
+        obj, _ = cls.objects.get_or_create(pk=1, defaults={"brand_name": "Sesoo"})
         return obj
 
     class Meta:

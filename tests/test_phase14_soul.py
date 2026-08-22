@@ -47,7 +47,7 @@ class Phase14SoulTests(TestCase):
         self.assertContains(res, 'data-animate')
         self.assertContains(res, 'blob')
         self.assertContains(res, 'trust-bar')
-        self.assertContains(res, 'چرا تبریز سایت')
+        self.assertContains(res, 'چرا Sesoo')
 
     def test_other_pages(self):
         for url in ['/services/web-design/', '/about-us/', '/contact/', '/styleguide/']:

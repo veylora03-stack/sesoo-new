@@ -9,7 +9,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         cat1, _ = Category.objects.get_or_create(slug='web-design', defaults={'title': 'آموزش طراحی سایت', 'description': 'مقالات آموزشی در حوزه طراحی سایت', 'order': 1, 'is_active': True})
         cat2, _ = Category.objects.get_or_create(slug='seo', defaults={'title': 'آموزش سئو', 'description': 'مقالات آموزشی در حوزه سئو و گوگل', 'order': 2, 'is_active': True})
-        cat3, _ = Category.objects.get_or_create(slug='news', defaults={'title': 'اخبار تبریز سایت', 'description': 'اخبار و به‌روزرسانی‌های تبریز سایت', 'order': 3, 'is_active': True})
+        cat3, _ = Category.objects.get_or_create(slug='news', defaults={'title': 'اخبار Sesoo', 'description': 'اخبار و به‌روزرسانی‌های Sesoo', 'order': 3, 'is_active': True})
 
         tag1, _ = Tag.objects.get_or_create(slug='django', defaults={'title': 'Django'})
         tag2, _ = Tag.objects.get_or_create(slug='web-design', defaults={'title': 'طراحی سایت'})
@@ -27,7 +27,7 @@ class Command(BaseCommand):
                 'status': 'published',
                 'published_at': now,
                 'is_featured': True,
-                'author_name': 'تبریز سایت'
+                'author_name': 'Sesoo'
             }
         )
         p1.tags.add(tag1, tag2)
@@ -42,7 +42,7 @@ class Command(BaseCommand):
                 'status': 'published',
                 'published_at': now - timedelta(days=1),
                 'is_featured': False,
-                'author_name': 'تبریز سایت'
+                'author_name': 'Sesoo'
             }
         )
         p2.tags.add(tag3)
@@ -50,14 +50,14 @@ class Command(BaseCommand):
         p3, _ = Post.objects.update_or_create(
             slug='sample-news-post',
             defaults={
-                'title': 'نمونه خبر تبریز سایت',
-                'excerpt': 'این یک خلاصه نمونه برای خبر تبریز سایت است.',
-                'content': 'این متنplaceholder برای محتوای خبر است. در این خبر درباره فعالیت‌های تبریز سایت صحبت می‌کنیم.',
+                'title': 'نمونه خبر Sesoo',
+                'excerpt': 'این یک خلاصه نمونه برای خبر Sesoo است.',
+                'content': 'این متنplaceholder برای محتوای خبر است. در این خبر درباره فعالیت‌های Sesoo صحبت می‌کنیم.',
                 'category': cat3,
                 'status': 'published',
                 'published_at': now - timedelta(days=2),
                 'is_featured': False,
-                'author_name': 'تبریز سایت'
+                'author_name': 'Sesoo'
             }
         )
         p3.tags.add(tag1)
@@ -72,7 +72,7 @@ class Command(BaseCommand):
                 'status': 'draft',
                 'published_at': None,
                 'is_featured': False,
-                'author_name': 'تبریز سایت'
+                'author_name': 'Sesoo'
             }
         )
         p4.tags.add(tag2)

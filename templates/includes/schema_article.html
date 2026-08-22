@@ -8,11 +8,11 @@
   "dateModified": "{{ post.updated_at|date:'Y-m-d\TH:i:s' }}",
   "author": {
     "@type": "Person",
-    "name": "{% if post.author_name %}{{ post.author_name|escapejs }}{% else %}تبریز سایت{% endif %}"
+    "name": "{% if post.author_name %}{{ post.author_name|escapejs }}{% else %}Sesoo{% endif %}"
   },
   "publisher": {
     "@type": "Organization",
-    "name": "{% if site_settings and site_settings.brand_name %}{{ site_settings.brand_name|escapejs }}{% else %}تبریز سایت{% endif %}"
+    "name": "{% if site_settings and site_settings.brand_name %}{{ site_settings.brand_name|escapejs }}{% else %}Sesoo{% endif %}"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",

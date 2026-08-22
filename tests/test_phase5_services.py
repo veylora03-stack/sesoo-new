@@ -41,7 +41,7 @@ class Phase5ServicesTests(TestCase):
         call_command('init_services')
         response = self.client.get('/services/web-design/')
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'طراحی سایت حرفه‌ای در تبریز')
+        self.assertContains(response, 'طراحی سایت حرفه‌ای در Sesoo')
         
         response_seo = self.client.get('/services/seo/')
         self.assertEqual(response_seo.status_code, 200)

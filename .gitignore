@@ -1,19 +1,21 @@
 .venv/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
 db.sqlite3
+*.sqlite3
 .env
+.env.production
+.env.local
 media/
 staticfiles/
 .debug/
 .backups/
-.env.production
-.env.local
-# Phase 36 additions
-# Python
-*.pyo
-*.pyd
-.Python
+.debug/
+scripts/
+backups/
 # Django
 *.log
 # OS
@@ -25,12 +27,10 @@ Thumbs.db
 *.swp
 *.swo
 *~
-# Environment
-# Database
-*.sqlite3
 # Node
 node_modules/
 npm-debug.log
-
 # Nginx config (deprecated - using Caddy instead)
 deploy/nginx/
+# Freebuff
+.freebuff/

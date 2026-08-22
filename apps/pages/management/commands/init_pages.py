@@ -7,12 +7,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         home = HomePage.load()
-        home.hero_subtitle = "تبریز سایت به کسب‌وکارها کمک می‌کند با طراحی سایت حرفه‌ای و سئوی اصولی، مشتریان بیشتری از گوگل جذب کنند."
+        home.hero_subtitle = "Sesoo به کسب‌وکارها کمک می‌کند با طراحی سایت حرفه‌ای و سئوی اصولی، مشتریان بیشتری از گوگل جذب کنند."
         home.primary_cta_text = "درخواست مشاوره رایگان"
         home.primary_cta_url = "/contact/"
         home.secondary_cta_text = "مشاهده خدمات"
         home.secondary_cta_url = "/services/"
-        home.services_heading = "خدمات تبریز سایت"
+        home.services_heading = "خدمات Sesoo"
         home.services_subheading = "راه‌حل‌های دیجیتال برای رشد کسب‌وکار شما"
         home.portfolio_heading = "نمونه‌کارهای منتخب"
         home.portfolio_subheading = "نگاهی به پروژه‌هایی که با افتخار انجام داده‌ایم"
@@ -20,25 +20,25 @@ class Command(BaseCommand):
         home.faq_heading = "سوالات متداول"
         home.blog_heading = "آخرین مقالات"
         home.cta_title = "برای شروع پروژه آماده‌ای؟"
-        home.cta_subtitle = "اطلاعات تماس خود را ثبت کن تا کارشناسان تبریز سایت در اولین فرصت با شما تماس بگیرند."
+        home.cta_subtitle = "اطلاعات تماس خود را ثبت کن تا کارشناسان Sesoo در اولین فرصت با شما تماس بگیرند."
         home.cta_button_text = "درخواست مشاوره"
         home.cta_button_url = "/contact/"
         home.save()
 
         about = AboutPage.load()
-        about.intro = "تبریز سایت یک مجموعه دیجیتال در تبریز است که روی طراحی سایت، سئو و رشد آنلاین کسب‌وکارها تمرکز دارد. این متنplaceholder است و بعداً با محتوای واقعی جایگزین می‌شود."
-        about.story_title = "داستان تبریز سایت"
-        about.story_content = "این متنplaceholder برای داستان تبریز سایت است و بعداً با محتوای واقعی جایگزین می‌شود."
+        about.intro = "Sesoo یک مجموعه دیجیتال در Sesoo است که روی طراحی سایت، سئو و رشد آنلاین کسب‌وکارها تمرکز دارد. این متنplaceholder است و بعداً با محتوای واقعی جایگزین می‌شود."
+        about.story_title = "داستان Sesoo"
+        about.story_content = "این متنplaceholder برای داستان Sesoo است و بعداً با محتوای واقعی جایگزین می‌شود."
         about.mission_title = "ماموریت ما"
-        about.mission_content = "این متنplaceholder برای ماموریت تبریز سایت است و بعداً با محتوای واقعی جایگزین می‌شود."
+        about.mission_content = "این متنplaceholder برای ماموریت Sesoo است و بعداً با محتوای واقعی جایگزین می‌شود."
         about.vision_title = "چشم‌انداز ما"
-        about.vision_content = "این متنplaceholder برای چشم‌انداز تبریز سایت است و بعداً با محتوای واقعی جایگزین می‌شود."
-        about.seo_title = "درباره تبریز سایت"
-        about.seo_description = "آشنایی با تبریز سایت، خدمات، ماموریت و تیم ما."
+        about.vision_content = "این متنplaceholder برای چشم‌انداز Sesoo است و بعداً با محتوای واقعی جایگزین می‌شود."
+        about.seo_title = "درباره Sesoo"
+        about.seo_description = "آشنایی با Sesoo، خدمات، ماموریت و تیم ما."
         about.save()
 
-        LegalPage.objects.update_or_create(slug='terms', defaults={'title': 'قوانین و مقررات', 'content': 'این متنplaceholder برای قوانین و مقررات تبریز سایت است و بعداً با محتوای واقعی جایگزین می‌شود.', 'is_active': True, 'order': 1})
-        LegalPage.objects.update_or_create(slug='privacy', defaults={'title': 'حریم خصوصی', 'content': 'این متنplaceholder برای حریم خصوصی تبریز سایت است و بعداً با محتوای واقعی جایگزین می‌شود.', 'is_active': True, 'order': 2})
+        LegalPage.objects.update_or_create(slug='terms', defaults={'title': 'قوانین و مقررات', 'content': 'این متنplaceholder برای قوانین و مقررات Sesoo است و بعداً با محتوای واقعی جایگزین می‌شود.', 'is_active': True, 'order': 1})
+        LegalPage.objects.update_or_create(slug='privacy', defaults={'title': 'حریم خصوصی', 'content': 'این متنplaceholder برای حریم خصوصی Sesoo است و بعداً با محتوای واقعی جایگزین می‌شود.', 'is_active': True, 'order': 2})
 
         header_menus = [
             ("صفحه اصلی", "/", 1),
