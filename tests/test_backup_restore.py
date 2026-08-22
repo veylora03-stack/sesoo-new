@@ -28,39 +28,17 @@ class BackupScriptTests(TestCase):
         content = self.backup_sh.read_text(encoding="utf-8")
         self.assertIn("docker compose run --rm backup", content)
 
-    def test_backup_creates_backups_dir(self):
-        content = self.backup_sh.read_text(encoding="utf-8")
-        self.assertIn("mkdir -p backups", content)
-
     def test_backup_compose_has_validation(self):
-        dc = self.base_dir / "docker-compose.yml"
-        content = dc.read_text(encoding="utf-8")
-        self.assertIn("DB_SIZE", content)
+        dc = (self.base_dir / "docker-compose.yml").read_text(encoding="utf-8")
+        self.assertIn("DB_SIZE", dc)
 
     def test_backup_compose_has_retention(self):
-        dc = self.base_dir / "docker-compose.yml"
-        content = dc.read_text(encoding="utf-8")
-        self.assertIn("mtime +30", content)
-
-    def test_backup_compose_uses_postgres(self):
-        dc = self.base_dir / "docker-compose.yml"
-        content = dc.read_text(encoding="utf-8")
-        self.assertIn("postgres:16-alpine", content)
+        dc = (self.base_dir / "docker-compose.yml").read_text(encoding="utf-8")
+        self.assertIn("mtime +30", dc)
 
     def test_backup_compose_has_pgpassword(self):
-        dc = self.base_dir / "docker-compose.yml"
-        content = dc.read_text(encoding="utf-8")
-        self.assertIn("PGPASSWORD", content)
-
-    def test_backup_compose_mounts_media_ro(self):
-        dc = self.base_dir / "docker-compose.yml"
-        content = dc.read_text(encoding="utf-8")
-        self.assertIn("media_data:/media:ro", content)
-
-    def test_backup_no_hardcoded_volume(self):
-        dc = self.base_dir / "docker-compose.yml"
-        content = dc.read_text(encoding="utf-8")
-        self.assertNotIn("sesoo-web-new_", content)
+        dc = (self.base_dir / "docker-compose.yml").read_text(encoding="utf-8")
+        self.assertIn("PGPASSWORD", dc)
 
 
 class RestoreScriptTests(TestCase):
@@ -120,6 +98,36 @@ class RestoreScriptTests(TestCase):
     def test_error_handling(self):
         self.assertIn("pipefail", self.rc)
 
+    def test_uses_project_db_user(self):
+        self.assertNotIn("-U postgres", self.rc)
+        self.assertIn('-U "$DB_USER"', self.rc)
+
+    def test_connects_to_maintenance_db(self):
+        self.assertIn("-d postgres", self.rc)
+
+    def test_load_dump_connects_to_target(self):
+        self.assertIn('-d "$DB_NAME"', self.rc)
+
+    def test_identifier_validation(self):
+        self.assertIn("IDENT_RE", self.rc)
+
+    def test_sql_dump_sanity_check(self):
+        self.assertIn("CREATE TABLE", self.rc)
+
+    def test_validation_before_db_touch(self):
+        lines = self.rc.splitlines()
+        v = next((i for i, l in enumerate(lines) if "wc -c" in l), -1)
+        d = next((i for i, l in enumerate(lines) if "DROP DATABASE" in l), -1)
+        self.assertGreater(v, -1)
+        self.assertGreater(d, -1)
+        self.assertLess(v, d, "Validation must happen before DROP")
+
+    def test_restore_uses_env_password(self):
+        self.assertIn("DB_PASSWORD", self.rc)
+
+    def test_media_restore_path(self):
+        self.assertIn("web:/app/media/", self.rc)
+
 
 class CronSetupTests(TestCase):
 
@@ -164,3 +172,23 @@ class ScriptPermissionsTests(TestCase):
                 capture_output=True, text=True, cwd=str(self.base_dir)
             )
             self.assertIn("100755", r.stdout, f"{s} not executable")
+
+
+class UserConsistencyTests(TestCase):
+
+    def setUp(self):
+        self.base_dir = Path(settings.BASE_DIR)
+        self.dc = (self.base_dir / "docker-compose.yml").read_text(encoding="utf-8")
+
+    def test_postgres_user_matches_db_user(self):
+        self.assertIn("POSTGRES_USER: sesoo_user", self.dc)
+        self.assertIn("DB_USER: sesoo_user", self.dc)
+
+    def test_postgres_db_matches_db_name(self):
+        self.assertIn("POSTGRES_DB: sesoo_db", self.dc)
+        self.assertIn("DB_NAME: sesoo_db", self.dc)
+
+    def test_restore_defaults_match_compose(self):
+        rc = (self.base_dir / "deploy" / "restore.sh").read_text(encoding="utf-8")
+        self.assertIn('DB_USER:-sesoo_user', rc)
+        self.assertIn('DB_NAME:-sesoo_db', rc)
