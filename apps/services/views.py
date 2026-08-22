@@ -1,9 +1,11 @@
+import logging
+
 from django.views.generic import ListView, DetailView
 from .models import ServicePage
-try:
-    from apps.core.models import FAQ
-except ImportError:
-    FAQ = None
+from apps.core.models import FAQ
+
+logger = logging.getLogger(__name__)
+
 
 class ServiceListView(ListView):
     model = ServicePage
@@ -12,6 +14,7 @@ class ServiceListView(ListView):
 
     def get_queryset(self):
         return ServicePage.objects.filter(is_active=True).order_by('order', 'title')
+
 
 class ServiceDetailView(DetailView):
     model = ServicePage
@@ -26,11 +29,9 @@ class ServiceDetailView(DetailView):
         service = self.object
         context['features'] = service.features.filter(is_active=True).order_by('order')
         context['pricings'] = service.pricings.filter(is_active=True).order_by('order')
-        if FAQ:
-            try:
-                context['faqs'] = FAQ.objects.filter(is_active=True, related_page=service.related_faq_page).order_by('order')
-            except Exception:
-                context['faqs'] = []
-        else:
+        try:
+            context['faqs'] = FAQ.objects.filter(is_active=True, related_page=service.related_faq_page).order_by('order')
+        except Exception:
+            logger.exception("Error loading FAQs for service %s", service.slug)
             context['faqs'] = []
         return context

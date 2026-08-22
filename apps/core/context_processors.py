@@ -1,5 +1,10 @@
+import logging
+
 from django.db import OperationalError, ProgrammingError
 from .models import SiteSettings, MenuItem, SocialLink
+
+logger = logging.getLogger(__name__)
+
 
 def core_context(request):
     context = {
@@ -15,4 +20,6 @@ def core_context(request):
         context['social_links'] = SocialLink.objects.filter(is_active=True).order_by("order")
     except (OperationalError, ProgrammingError):
         pass
+    except Exception:
+        logger.exception("Error loading core context data")
     return context

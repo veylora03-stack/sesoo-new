@@ -1,5 +1,8 @@
 from .base import *
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 DEBUG = False
 
@@ -68,7 +71,8 @@ LOGGING = {
         },
     },
 }
-# TABRIZ PHASE12 REDIS CACHE
+
+# Redis cache
 REDIS_URL = os.getenv("REDIS_URL", "")
 if REDIS_URL:
     CACHES = {
@@ -80,6 +84,7 @@ if REDIS_URL:
             },
         }
     }
+
 MIDDLEWARE = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -88,7 +93,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'apps.core.middleware.AuthenticatedUserCacheBypass',  # Must be after AuthenticationMiddleware
+    'apps.core.middleware.AuthenticatedUserCacheBypass',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
@@ -99,29 +104,29 @@ CACHE_MIDDLEWARE_KEY_PREFIX = 'tabriz_site'
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
 
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-from sentry_sdk.integrations.redis import RedisIntegration
-import os
-import logging
-import subprocess
-
-logger = logging.getLogger(__name__)
-
+# Sentry (optional)
 sentry_dsn = os.environ.get("SENTRY_DSN")
 if sentry_dsn:
     try:
-        release = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).decode("utf-8").strip()
-    except Exception:
-        release = "unknown"
-        
-    sentry_sdk.init(
-        dsn=sentry_dsn,
-        integrations=[DjangoIntegration(), RedisIntegration()],
-        traces_sample_rate=0.1,
-        send_default_pii=False,  # Privacy: don't send PII (phone, email, IP) to Sentry
-        environment="production",
-        release=release,
-    )
+        import sentry_sdk
+        from sentry_sdk.integrations.django import DjangoIntegration
+        from sentry_sdk.integrations.redis import RedisIntegration
+
+        try:
+            import subprocess
+            release = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).decode("utf-8").strip()
+        except Exception:
+            release = "unknown"
+
+        sentry_sdk.init(
+            dsn=sentry_dsn,
+            integrations=[DjangoIntegration(), RedisIntegration()],
+            traces_sample_rate=0.1,
+            send_default_pii=False,
+            environment="production",
+            release=release,
+        )
+    except ImportError:
+        logger.warning("sentry-sdk is not installed. Sentry monitoring disabled.")
 else:
     logger.warning("SENTRY_DSN is not set. Sentry monitoring is disabled.")
