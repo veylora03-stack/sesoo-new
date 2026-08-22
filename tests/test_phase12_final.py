@@ -16,7 +16,7 @@ class Phase12FinalTests(TestCase):
     def test_all_pages_200(self):
         urls = [
             '/', '/about-us/', '/services/', '/services/web-design/', '/services/seo/',
-            '/portfolio/', '/portfolio/tabriz-corporate-sample/',
+            '/portfolio/', '/portfolio/sesoo-corporate-sample/',
             '/blog/', '/blog/sample-web-design-post/',
             '/contact/', '/terms/', '/privacy/', '/healthz/', '/styleguide/'
         ]

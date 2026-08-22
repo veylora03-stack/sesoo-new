@@ -12,8 +12,8 @@ if [ -f .env.production ]; then
     set +a
 fi
 
-DB_USER="${DB_USER:-tabriz_user}"
-DB_NAME="${DB_NAME:-tabriz_site}"
+DB_USER="${DB_USER:-sesoo_user}"
+DB_NAME="${DB_NAME:-sesoo_db}"
 
 mkdir -p "$BACKUP_DIR"
 

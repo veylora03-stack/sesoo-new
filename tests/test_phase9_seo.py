@@ -28,7 +28,7 @@ class Phase9SeoTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<urlset')
         self.assertContains(response, '/services/web-design/')
-        self.assertContains(response, '/portfolio/tabriz-corporate-sample/')
+        self.assertContains(response, '/portfolio/sesoo-corporate-sample/')
         self.assertContains(response, '/blog/sample-web-design-post/')
         self.assertContains(response, '/about-us/')
 
@@ -57,7 +57,7 @@ class Phase9SeoTests(TestCase):
         self.assertContains(response, 'Article')
 
     def test_creativework_schema(self):
-        response = self.client.get('/portfolio/tabriz-corporate-sample/')
+        response = self.client.get('/portfolio/sesoo-corporate-sample/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'application/ld+json')
         self.assertContains(response, 'CreativeWork')

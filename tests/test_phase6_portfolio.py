@@ -28,14 +28,14 @@ class Phase6PortfolioTests(TestCase):
         call_command('init_portfolio')
         response = self.client.get('/portfolio/')
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'نمونه کار شرکتی تبریز سایت')
+        self.assertContains(response, 'Sesoo Corporate Sample')
         self.assertContains(response, 'نمونه کار فروشگاهی نمونه')
 
     def test_portfolio_category_view(self):
         call_command('init_portfolio')
         response = self.client.get('/portfolio/category/corporate/')
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'نمونه کار شرکتی تبریز سایت')
+        self.assertContains(response, 'Sesoo Corporate Sample')
         
         response_ecom = self.client.get('/portfolio/category/ecommerce/')
         self.assertEqual(response_ecom.status_code, 200)
@@ -43,7 +43,7 @@ class Phase6PortfolioTests(TestCase):
 
     def test_portfolio_detail_view(self):
         call_command('init_portfolio')
-        response = self.client.get('/portfolio/tabriz-corporate-sample/')
+        response = self.client.get('/portfolio/sesoo-corporate-sample/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'چالش نمونه پروژه شرکتی')
 
@@ -53,10 +53,10 @@ class Phase6PortfolioTests(TestCase):
 
     def test_inactive_project_404(self):
         call_command('init_portfolio')
-        p = Project.objects.get(slug='tabriz-corporate-sample')
+        p = Project.objects.get(slug='sesoo-corporate-sample')
         p.is_active = False
         p.save()
-        response = self.client.get('/portfolio/tabriz-corporate-sample/')
+        response = self.client.get('/portfolio/sesoo-corporate-sample/')
         self.assertEqual(response.status_code, 404)
 
     def test_inactive_category_404(self):
@@ -83,12 +83,12 @@ class Phase6PortfolioTests(TestCase):
 
     def test_get_absolute_url(self):
         call_command('init_portfolio')
-        p = Project.objects.get(slug='tabriz-corporate-sample')
+        p = Project.objects.get(slug='sesoo-corporate-sample')
         self.assertIn('/portfolio/', p.get_absolute_url())
-        self.assertIn('tabriz-corporate-sample', p.get_absolute_url())
+        self.assertIn('sesoo-corporate-sample', p.get_absolute_url())
 
     def test_project_image_str_without_image(self):
         call_command('init_portfolio')
-        p = Project.objects.get(slug='tabriz-corporate-sample')
+        p = Project.objects.get(slug='sesoo-corporate-sample')
         img = ProjectImage.objects.create(project=p, alt_text='Test Alt', caption='Test Caption')
         self.assertIn('Test Alt', str(img))

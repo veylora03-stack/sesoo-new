@@ -10,7 +10,7 @@ class Command(BaseCommand):
         site = SiteSettings.load()
         if not site.city: site.city = "تبریز"
         if not site.brand_name: site.brand_name = "تبریز سایت"
-        if not site.brand_slug: site.brand_slug = "tabriz-site"
+        if not site.brand_slug: site.brand_slug = "sesoo"
         site.description = "تبریز سایت، مجموعه‌ای تخصصی در حوزه طراحی سایت و سئو در تبریز است که به کسب‌وکارها کمک می‌کند تا حضور دیجیتال قدرتمند و پایداری داشته باشند."
         site.footer_text = "تبریز سایت؛ همراه شما در مسیر رشد دیجیتال."
         if not site.copyright: site.copyright = "© تبریز سایت | تمامی حقوق محفوظ است."

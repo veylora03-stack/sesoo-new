@@ -2,59 +2,118 @@ services:
   db:
     image: postgres:16-alpine
     restart: unless-stopped
-    env_file: .env.production
-    environment:
-      POSTGRES_DB: tabriz_site
-      POSTGRES_USER: tabriz_user
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    env_file: .env.production
+    environment:
+      POSTGRES_DB: sesoo_db
+      POSTGRES_USER: sesoo_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U tabriz_user -d tabriz_site"]
+      test: ["CMD-SHELL", "pg_isready -U sesoo_user -d sesoo_db"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - web
+
   redis:
     image: redis:7-alpine
     restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - web
+
   migrate:
     build: .
-    command: python manage.py migrate --noinput
+    restart: "no"
+    env_file: .env.production
+    environment:
+      DJANGO_ENV: production
+      DB_ENGINE: postgresql
+      DB_NAME: sesoo_db
+      DB_USER: sesoo_user
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set}
+      DB_HOST: db
+      DB_PORT: "5432"
+      REDIS_URL: redis://redis:6379/1
     depends_on:
       db:
         condition: service_healthy
-    env_file: .env.production
-    restart: "no"
+      redis:
+        condition: service_healthy
+    command: python manage.py migrate --noinput
+    networks:
+      - web
+
   web:
     build: .
     restart: unless-stopped
     env_file: .env.production
+    environment:
+      DJANGO_ENV: production
+      DB_ENGINE: postgresql
+      DB_NAME: sesoo_db
+      DB_USER: sesoo_user
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set}
+      DB_HOST: db
+      DB_PORT: "5432"
+      REDIS_URL: redis://redis:6379/1
     volumes:
       - media_data:/app/media
+      - static_data:/app/staticfiles
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
       migrate:
         condition: service_completed_successfully
-      redis:
-        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz/')"]
+      interval: 30s
+      timeout: 10s
+      start_period: 15s
+      retries: 3
+    networks:
+      - web
+
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
-    env_file: .env.production
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - media_data:/app/media:ro
       - caddy_data:/data
       - caddy_config:/config
+      - static_data:/srv/static:ro
+      - media_data:/srv/media:ro
+    env_file: .env.production
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:-localhost}
     depends_on:
+      web:
+        condition: service_healthy
+    networks:
       - web
 
 volumes:
   postgres_data:
+  redis_data:
   media_data:
+  static_data:
   caddy_data:
-  backups_data:
   caddy_config:
+
+networks:
+  web:
+    driver: bridge

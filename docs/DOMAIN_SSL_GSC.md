@@ -47,6 +47,6 @@
 ## 8. پشتیبان‌گیری (Backup)
 - برای بکاپ از دیتابیس:
   ```bash
-  docker compose exec -T db pg_dump -U tabriz_user tabriz_site > backup.sql
+  docker compose exec -T db pg_dump -U sesoo_user sesoo_db > backup.sql
   ```
 - برای بکاپ از فایل‌های مدیا، از volume مربوطه یا دایرکتوری media پشتیبان تهیه کنید.

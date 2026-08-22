@@ -14,6 +14,7 @@ class BlogSearchTests(TestCase):
 
     def setUp(self):
         self.client = Client()
+        cache.clear()
         from apps.blog.models import Post, Category
         self.category = Category.objects.create(
             title='Test Category', slug='test-cat', is_active=True
@@ -118,7 +119,7 @@ class PermissionTests(TestCase):
         response = self.client.get('/sitemap.xml')
         self.assertEqual(response.status_code, 200)
 
-    def test_test_error_blocked_in_production(self):
+    def test_test_error_forbidden_in_production(self):
         """test-error should return 403 when DEBUG=False."""
         from django.test import override_settings
         with override_settings(DEBUG=False):

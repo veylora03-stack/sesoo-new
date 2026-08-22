@@ -1,54 +1,54 @@
-# تبریز سایت
+# Sesoo
 
-پلتفرم حرفه‌ای طراحی سایت و سئو برای کسب‌وکارهای تبریز
+Django-based web platform for web design services, portfolio showcase, and lead management.
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![Django](https://img.shields.io/badge/Django-5.0-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-## ✨ امکانات
+## Features
 
-### 🎯 برای کاربران
-- صفحه اصلی با معرفی خدمات
-- صفحه خدمات (طراحی سایت، سئو)
-- نمونه‌کارها با فیلتر دسته‌بندی
-- وبلاگ با جستجو و دسته‌بندی
-- فرم تماس با validation قوی
-- سوالات متداول
-- درباره ما
+### For Visitors
+- Home page with service introduction
+- Services pages (web design, SEO)
+- Portfolio with category filtering
+- Blog with search and categories
+- Contact form with strong validation
+- FAQ section
+- About page
 
-### 🔧 برای مدیران
-- پنل مدیریت کامل
-- مدیریت لیدها با workflow (new → contacted → won/lost)
-- ویرایشگر CKEditor با آپلود تصویر
-- مدیریت نمونه‌کارها و وبلاگ
-- داشبورد آماری
-- تنظیمات سئو (sitemap, robots, schema)
+### For Admins
+- Full admin panel
+- Lead management with workflow (new → contacted → won/lost)
+- CKEditor 5 with image upload
+- Portfolio and blog management
+- SEO settings (sitemap, robots, schema)
 
-### 🛡️ امنیت
-- Rate limiting برای فرم‌ها
-- Honeypot ضد اسپم
+### Security
+- IP-based rate limiting for forms
+- Honeypot anti-spam
 - CSRF/XSS protection
-- HSTS و Secure Cookies
-- django-axes برای محافظت ادمین
+- HSTS and Secure Cookies
+- django-axes brute-force protection
+- Caddy security headers
 
-### 🚀 Performance
-- Redis caching
-- PostgreSQL
-- Gunicorn با multiple workers
-- Caddy reverse proxy (with auto SSL)
+### Performance
+- Redis caching (mandatory in production)
+- PostgreSQL (mandatory in production)
+- Gunicorn with multiple workers
+- Caddy reverse proxy with auto SSL
 - Health check endpoint
-- Automated backups
+- Automated backup scripts
 
-## 📦 نصب و راه‌اندازی
+## Setup
 
-### پیش‌نیازها
+### Prerequisites
 - Python 3.10+
 - Docker & Docker Compose
 - PostgreSQL 14+
 - Redis 6+
 
-### Development (محلی)
+### Development (local)
 ```bash
 git clone https://github.com/veylora03-stack/sesoo-new.git
 cd sesoo-new
@@ -61,15 +61,33 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-### Production (استقرار)
+### Production (deployment)
 ```bash
+# 1. Copy env files
 cp .env.production.example .env.production
-# .env.production را ویرایش کنید (SECRET_KEY, ALLOWED_HOSTS, DB_PASSWORD)
+cp .env.production.example .env
+
+# 2. Edit .env.production with real values:
+#    SECRET_KEY, ALLOWED_HOSTS, DB_PASSWORD, POSTGRES_PASSWORD, SITE_DOMAIN, REDIS_URL
+
+# 3. Edit .env with the same POSTGRES_PASSWORD and SITE_DOMAIN
+
+# 4. Start the stack
 docker compose up -d
+
+# 5. Create admin user
 docker compose exec web python manage.py createsuperuser
 ```
 
-## 🏗️ ساختار پروژه
+**Important:** Production requires Redis and PostgreSQL. SQLite is not supported.
+
+### Environment Files
+- `.env.production` — Django environment variables (loaded by containers via `env_file`)
+- `.env` — Docker Compose interpolation variables (`POSTGRES_PASSWORD`, `SITE_DOMAIN`)
+
+Both files must have matching values for `DB_PASSWORD`/`POSTGRES_PASSWORD`.
+
+## Project Structure
 
 ```
 .
@@ -87,35 +105,46 @@ docker compose exec web python manage.py createsuperuser
 └── tests/            # Test suite
 ```
 
-## 🧪 تست
+## Testing
 
 ```bash
 python manage.py test
 ```
 
-## 📊 Monitoring
+## Monitoring
 
 - Health check: `/healthz/`
 - Detailed health (staff only): `/healthz/detailed/`
 - Sentry integration (optional)
 
-## 🔒 امنیت
+## Security
 
-- SECRET_KEY: حتماً در production تغییر دهید
-- ALLOWED_HOSTS: فقط دامنه‌های معتبر
-- DEBUG=False در production
-- HTTPS اجباری
+- `SECRET_KEY`: Required in production
+- `ALLOWED_HOSTS`: Required in production
+- `DEBUG=False` in production
+- Redis and PostgreSQL are mandatory in production
+- HTTPS required (Caddy handles SSL automatically)
+- `/test-error/` returns 403 in production
 
-## 📝 License
+## Backup & Restore
+
+```bash
+# Backup (runs daily via cron)
+bash deploy/backup.sh
+
+# Restore
+bash deploy/restore.sh /path/to/backup.tar.gz
+```
+
+## CI/CD
+
+GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push:
+- Django checks
+- Migrations
+- Test suite (275 tests)
+- Docker Compose validation
+- Docker image build
+
+## License
 
 MIT License
-
-## 👥 Contributors
-
-- veylora03-stack
-
-## 🤝 Support
-
-برای support و سوالات:
-- Email: info@tabrizsite.com
-- Website: https://tabrizsite.com

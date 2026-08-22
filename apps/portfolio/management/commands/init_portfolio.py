@@ -13,9 +13,9 @@ class Command(BaseCommand):
         for t in ['Django', 'Python', 'HTML/CSS', 'JavaScript', 'SEO']:
             techs[t], _ = ProjectTechnology.objects.get_or_create(title=t)
 
-        if not Project.objects.filter(slug='tabriz-corporate-sample').exists():
+        if not Project.objects.filter(slug='sesoo-corporate-sample').exists():
             p1 = Project.objects.create(
-                title='نمونه کار شرکتی تبریز سایت', slug='tabriz-corporate-sample', category=cat1,
+                title='Sesoo Corporate Sample', slug='sesoo-corporate-sample', category=cat1,
                 client_name='مشتری نمونه', industry='خدمات',
                 summary='این یک خلاصه نمونه برای پروژه شرکتی است و بعداً با محتوای واقعی جایگزین می‌شود.',
                 challenge='چالش نمونه پروژه شرکتی در این بخش قرار می‌گیرد.',

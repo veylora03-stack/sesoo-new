@@ -15,6 +15,34 @@ ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS if h.strip()]
 if not ALLOWED_HOSTS:
     raise ValueError("ALLOWED_HOSTS must be set in production environment.")
 
+# --- Redis is MANDATORY in production ---
+REDIS_URL = os.getenv("REDIS_URL", "")
+if not REDIS_URL:
+    raise ValueError(
+        "REDIS_URL must be set in production. "
+        "Session engine requires Redis. Example: redis://redis:6379/0"
+    )
+
+# --- PostgreSQL is MANDATORY in production ---
+DB_ENGINE = os.getenv("DB_ENGINE", "")
+if DB_ENGINE != "postgresql":
+    raise ValueError(
+        "DB_ENGINE=postgresql must be set in production. "
+        "SQLite is not supported in production."
+    )
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME", "sesoo_db"),
+        "USER": os.getenv("DB_USER", ""),
+        "PASSWORD": os.getenv("DB_PASSWORD", ""),
+        "HOST": os.getenv("DB_HOST", "127.0.0.1"),
+        "PORT": os.getenv("DB_PORT", "5432"),
+    }
+}
+
+# --- Security ---
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "True").lower() in ("true", "1", "yes")
@@ -23,18 +51,7 @@ SECURE_HSTS_PRELOAD = True
 SECURE_HSTS_SECONDS = 31536000
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-if os.getenv("DB_ENGINE") == "postgresql":
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.getenv("DB_NAME", "tabriz_site"),
-            "USER": os.getenv("DB_USER", ""),
-            "PASSWORD": os.getenv("DB_PASSWORD", ""),
-            "HOST": os.getenv("DB_HOST", "127.0.0.1"),
-            "PORT": os.getenv("DB_PORT", "5432"),
-        }
-    }
-
+# --- WhiteNoise ---
 if 'whitenoise.middleware.WhiteNoiseMiddleware' not in MIDDLEWARE:
     try:
         sec_idx = MIDDLEWARE.index('django.middleware.security.SecurityMiddleware')
@@ -51,6 +68,7 @@ STORAGES = {
     },
 }
 
+# --- Logging ---
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -72,19 +90,18 @@ LOGGING = {
     },
 }
 
-# Redis cache
-REDIS_URL = os.getenv("REDIS_URL", "")
-if REDIS_URL:
-    CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": REDIS_URL,
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            },
-        }
+# --- Redis Cache (mandatory, validated above) ---
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": REDIS_URL,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
     }
+}
 
+# --- Middleware ---
 MIDDLEWARE = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -99,12 +116,12 @@ MIDDLEWARE = [
     'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 CACHE_MIDDLEWARE_SECONDS = 300
-CACHE_MIDDLEWARE_KEY_PREFIX = 'tabriz_site'
+CACHE_MIDDLEWARE_KEY_PREFIX = 'sesoo'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
 
-# Sentry (optional)
+# --- Sentry (optional) ---
 sentry_dsn = os.environ.get("SENTRY_DSN")
 if sentry_dsn:
     try:

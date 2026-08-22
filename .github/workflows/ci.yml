@@ -39,6 +39,7 @@ jobs:
       DB_PASSWORD: test_pass
       DB_HOST: localhost
       DB_PORT: 5432
+      REDIS_URL: redis://localhost:6379/1
 
     steps:
       - uses: actions/checkout@v4
@@ -65,8 +66,9 @@ jobs:
 
       - name: Validate Docker Compose
         run: |
-          # Create dummy .env.production for compose config validation
+          # Create .env files for Compose interpolation and Django
           cp .env.production.example .env.production
+          cp .env.production.example .env
           docker compose config
 
   docker:
@@ -79,6 +81,7 @@ jobs:
       - name: Build Docker image
         run: |
           cp .env.production.example .env.production
+          cp .env.production.example .env
           docker compose build
 
       - name: Verify Docker Compose services
