@@ -2,6 +2,7 @@ services:
   db:
     image: postgres:16-alpine
     restart: unless-stopped
+    env_file: .env.production
     environment:
       POSTGRES_DB: ${DB_NAME:-tabriz_site}
       POSTGRES_USER: ${DB_USER:-tabriz_user}
@@ -40,6 +41,7 @@ services:
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
+    env_file: .env.production
     ports:
       - "80:80"
       - "443:443"

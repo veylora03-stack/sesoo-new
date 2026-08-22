@@ -5,15 +5,15 @@ DATE=$(date +%Y%m%d_%H%M%S)
 BACKUP_DIR="backups"
 LOG_FILE="$BACKUP_DIR/backup.log"
 
-# Load environment variables if .env exists
-if [ -f .env ]; then
+# Load environment variables from .env.production
+if [ -f .env.production ]; then
     set -a
-    source .env
+    source .env.production
     set +a
 fi
 
-DB_USER=${POSTGRES_USER:-postgres}
-DB_NAME=${POSTGRES_DB:-sesoo_db}
+DB_USER=${DB_USER:-tabriz_user}
+DB_NAME=${DB_NAME:-tabriz_site}
 
 mkdir -p $BACKUP_DIR
 
@@ -28,13 +28,16 @@ else
     exit 1
 fi
 
-# Media backup
+# Media backup (copy from Docker volume)
 echo "[$DATE] Archiving media folder..." >> $LOG_FILE
-if tar -czf $BACKUP_DIR/media_$DATE.tar.gz media/; then
+if docker compose cp web:/app/media - | tar -czf $BACKUP_DIR/media_$DATE.tar.gz -C - .; then
     echo "[$DATE] Media backup successful: media_$DATE.tar.gz" >> $LOG_FILE
 else
-    echo "[$DATE] Media backup FAILED" >> $LOG_FILE
-    exit 1
+    echo "[$DATE] Media backup FAILED (falling back to local media/)" >> $LOG_FILE
+    tar -czf $BACKUP_DIR/media_$DATE.tar.gz media/ || {
+        echo "[$DATE] Media backup FAILED" >> $LOG_FILE
+        exit 1
+    }
 fi
 
 # Cleanup old backups (older than 30 days) - Retention Policy

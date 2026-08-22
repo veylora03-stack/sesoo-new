@@ -10,15 +10,15 @@ DB_FILE=$1
 MEDIA_FILE=$2
 BACKUP_DIR="backups"
 
-# Load environment variables if .env exists
-if [ -f .env ]; then
+# Load environment variables from .env.production
+if [ -f .env.production ]; then
     set -a
-    source .env
+    source .env.production
     set +a
 fi
 
-DB_USER=${POSTGRES_USER:-postgres}
-DB_NAME=${POSTGRES_DB:-sesoo_db}
+DB_USER=${DB_USER:-tabriz_user}
+DB_NAME=${DB_NAME:-tabriz_site}
 
 echo "=================================================="
 echo "WARNING: This will overwrite the current database and media folder!"

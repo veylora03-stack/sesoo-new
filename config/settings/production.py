@@ -83,12 +83,12 @@ if REDIS_URL:
 MIDDLEWARE = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'apps.core.middleware.AuthenticatedUserCacheBypass',
     'axes.middleware.AxesMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'apps.core.middleware.AuthenticatedUserCacheBypass',  # Must be after AuthenticationMiddleware
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
@@ -119,7 +119,7 @@ if sentry_dsn:
         dsn=sentry_dsn,
         integrations=[DjangoIntegration(), RedisIntegration()],
         traces_sample_rate=0.1,
-        send_default_pii=True,
+        send_default_pii=False,  # Privacy: don't send PII (phone, email, IP) to Sentry
         environment="production",
         release=release,
     )

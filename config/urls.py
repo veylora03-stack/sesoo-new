@@ -1,13 +1,15 @@
 from apps.core import views as core_views
-from apps.core.views import test_error_view, test_error_view
+from apps.core.views import (
+    test_error_view,
+    healthz_view,
+    healthz_detailed_view,
+    robots_txt,
+)
 from django.contrib import admin
-from django.urls import path, include, include, include, include
+from django.urls import path, include
 from django.views.generic import TemplateView
-from django.http import JsonResponse
 from django.contrib.sitemaps.views import sitemap
 from apps.core.sitemaps import sitemaps
-from apps.core.views import test_error_view, healthz_detailed_view, robots_txt
-from apps.core.views import healthz_view, healthz_detailed_view
 
 urlpatterns = [
     path('test-error/', test_error_view, name='test_error'),

@@ -1,25 +1,20 @@
-from django.contrib.auth.decorators import login_required
-import django
-from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponse, JsonResponse
-
-"""Health check views for monitoring."""
-import time
-import json
-import psutil
+import os
 import sys
-from datetime import datetime
+import time
+
+import django
+import psutil
+
 from django.conf import settings
-from django.contrib.admin.views.decorators import staff_member_required
-from django.http import JsonResponse
-from django.db import connections
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
+from django.db import connections
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
+from django.views.generic import TemplateView
 
 
 def robots_txt(request):
-    from django.http import HttpResponse
     txt = (
         'User-Agent: *\n'
         'Disallow: /admin/\n'
@@ -88,14 +83,6 @@ def healthz_view(request):
     return JsonResponse(data, status=status_code)
 
 def healthz_detailed_view(request):
-    from django.http import JsonResponse
-    from django.shortcuts import redirect
-    import psutil
-    import os
-    import time
-    import django
-    import sys
-
     if not getattr(request, 'user', None) or not request.user.is_authenticated or not request.user.is_staff:
         return redirect('/admin/login/?next=' + request.path)
 

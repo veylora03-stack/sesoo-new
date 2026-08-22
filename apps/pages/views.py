@@ -1,3 +1,5 @@
+import logging
+
 from django.views.generic import TemplateView, DetailView
 from .models import HomePage, AboutPage, LegalPage
 try:
@@ -7,6 +9,8 @@ try:
     from apps.blog.models import Post
 except ImportError:
     pass
+
+logger = logging.getLogger(__name__)
 
 class HomeView(TemplateView):
     template_name = 'pages/home.html'
@@ -22,7 +26,7 @@ class HomeView(TemplateView):
             context['process_steps'] = ProcessStep.objects.filter(is_active=True, related_page__in=['home', 'general']).order_by('order')
             context['latest_posts'] = Post.objects.filter(status='published').select_related('category').order_by('-published_at', '-created_at')[:3]
         except Exception:
-            pass
+            logger.exception("Error loading home page context data")
         return context
 
 class AboutView(TemplateView):
@@ -35,7 +39,7 @@ class AboutView(TemplateView):
             context['team_members'] = TeamMember.objects.filter(is_active=True).order_by('order')
             context['testimonials'] = Testimonial.objects.filter(is_active=True).order_by('order')[:3]
         except Exception:
-            pass
+            logger.exception("Error loading about page context data")
         return context
 
 class LegalDetailView(DetailView):
