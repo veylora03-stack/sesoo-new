@@ -133,7 +133,7 @@ python manage.py test
 bash deploy/backup.sh
 
 # Restore
-bash deploy/restore.sh
+bash deploy/restore.sh          # Interactive: stops web, drops DB, restores, restarts
 ```
 
 ## CI/CD
@@ -141,7 +141,7 @@ bash deploy/restore.sh
 GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push:
 - Django checks
 - Migrations
-- Test suite (275 tests)
+- Test suite (310+ tests)
 - Docker Compose validation
 - Docker image build
 

@@ -1,56 +1,72 @@
-# Automated Backup System
+# Backup & Restore
 
-This directory contains scripts to manage automated backups for the database and media files.
+## Backup
 
-## Taking a Backup
-
-To manually trigger a backup of the database and media folder:
-
+### Manual backup
 ```bash
 bash deploy/backup.sh
 ```
 
-Backups will be saved in the `backups/` directory at the root of the project.
+### Automated daily backup (via host cron)
+```bash
+bash deploy/cron-setup.sh   # Run once after deployment
+```
 
-- Database backups: `backups/db_YYYYMMDD_HHMMSS.sql`
-- Media backups: `backups/media_YYYYMMDD_HHMMSS.tar.gz`
+Adds a cron job that runs daily at 2:00 AM:
+```
+0 2 * * * cd /path/to/project && docker compose run --rm backup >> backups/cron.log 2>&1
+```
 
-Older backups (older than 30 days) are automatically cleaned up (Retention Policy).
+### What backup does
+- Uses `postgres:16-alpine` image (has `pg_dump` built-in)
+- Dumps database to `backups/db_YYYYMMDD_HHMMSS.sql`
+- Archives media volume to `backups/media_YYYYMMDD_HHMMSS.tar.gz`
+- Validates dump is non-empty (rejects corrupt dumps)
+- Cleans up backups older than 30 days
 
-## Restoring from Backup
+### Backup output
+```
+backups/
+  db_20260822_145000.sql        # PostgreSQL dump
+  media_20260822_145000.tar.gz  # Media volume archive
+  cron.log                      # Cron execution log
+```
 
-To restore the **latest** backup (interactive — asks for confirmation):
+## Restore
 
+### Restore latest matched backup pair
 ```bash
 bash deploy/restore.sh
 ```
 
-To restore specific backup files:
-
+### Restore specific files
 ```bash
-bash deploy/restore.sh backups/db_20260822_020000.sql backups/media_20260822_020000.tar.gz
+bash deploy/restore.sh backups/db_FILE.sql backups/media_FILE.tar.gz
 ```
 
-**WARNING:** This will overwrite the current database and media folder. You will be asked for confirmation before proceeding.
+### What restore does
+1. **Validates** backup files exist and are non-empty
+2. **Checks timestamp pairing** — DB and media must share the same timestamp
+3. **Asks for confirmation** — you must type `yes`
+4. **Stops web** — prevents writes during restore
+5. **Drops and recreates database** — guarantees clean restore (not append)
+6. **Terminates active connections** — safely disconnects all clients
+7. **Loads the SQL dump** — restores all data
+8. **Restores media** — copies files into Docker volume
+9. **Restarts web** — always restarts, even on failure (via trap)
+10. **Polls health check** — waits up to 60 seconds for `/healthz/`
 
-The restore process:
-1. Stops the web service to prevent writes during restore
-2. Restores the database using `psql`
-3. Restores media files to the Docker volume
-4. Restarts the web service and verifies health
+### Safety features
+- **Trap handler**: web service is always restarted, even if restore fails mid-way
+- **Timestamp validation**: prevents restoring mismatched DB/media pairs
+- **File validation**: rejects empty or corrupt backup files
+- **Confirmation prompt**: requires explicit `yes` before proceeding
+- **Health polling**: waits for real readiness, not just a fixed delay
 
-## Setting up Automated Daily Backups (Cron)
+### ⚠️ Warning
+Restore **destroys** the current database and overwrites media files. There is no undo.
 
-To schedule the backup script to run automatically every day at 2:00 AM:
-
-```bash
-bash deploy/cron-setup.sh
-```
-
-This adds a cron job: `0 2 * * * cd /path/to/project && docker compose run --rm backup`
-
-### Architecture
-
+## Architecture
 ```
 Host cron (2AM daily)
     ↓
@@ -61,20 +77,11 @@ postgres:16-alpine container
     └── tar media volume → backups/media_YYYYMMDD.tar.gz
 ```
 
-- Backup uses the official `postgres:16-alpine` image (includes `pg_dump`)
-- Media is backed up directly from the Docker volume
-- No Docker-in-Docker — host cron runs the backup service
-
-## Cleanup
-
-To remove unnecessary cache and temporary files:
-
-```bash
-bash deploy/cleanup.sh
-```
-
-This removes:
-- `__pycache__/` and `*.pyc`
-- `*.log`
-- `.DS_Store` and `Thumbs.db`
-- Editor swap files
+## Scripts
+| Script | Purpose |
+|--------|---------|
+| `backup.sh` | Wrapper to run backup service |
+| `restore.sh` | Interactive database + media restore |
+| `cron-setup.sh` | Install daily backup cron job |
+| `cleanup.sh` | Remove cache and temp files |
+| `run-migrations.sh` | Run migrations manually |
