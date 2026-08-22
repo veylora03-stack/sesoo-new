@@ -2,14 +2,16 @@ import time
 from django.test import TestCase, Client
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.urls import reverse
+from django.core.cache import cache
 from apps.leads.models import Lead, LeadNote, LeadLog
 
 User = get_user_model()
 
+
 class Phase4LeadsTests(TestCase):
     def setUp(self):
         self.client = Client()
+        cache.clear()  # Clear rate limiting cache between tests
         self.valid_data = {
             'full_name': 'کاربر تست',
             'phone': '09123456789',
@@ -63,11 +65,31 @@ class Phase4LeadsTests(TestCase):
         self.assertEqual(Lead.objects.count(), 0)
 
     def test_rate_limit(self):
-        session = self.client.session
-        session['last_lead_at'] = time.time()
-        session.save()
-        
-        response = self.client.post('/contact/', self.valid_data)
+        """IP-based rate limiting blocks after too many submissions."""
+        for i in range(5):
+            data = self.valid_data.copy()
+            data['phone'] = f'0912345678{i}'
+            response = self.client.post('/contact/', data)
+            self.assertEqual(response.status_code, 302, f"Lead {i+1} should succeed")
+
+        self.assertEqual(Lead.objects.count(), 5)
+
+        # 6th request should be rate limited
+        data = self.valid_data.copy()
+        data['phone'] = '09123456780'
+        response = self.client.post('/contact/', data)
+        self.assertEqual(response.status_code, 200)  # Form with error
+        self.assertEqual(Lead.objects.count(), 5)  # No new lead
+
+    def test_missing_required_fields(self):
+        """Missing required fields should fail validation."""
+        data = {
+            'full_name': '',
+            'phone': '',
+            'consent': True,
+            'website': '',
+        }
+        response = self.client.post('/contact/', data)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Lead.objects.count(), 0)
 
@@ -81,7 +103,7 @@ class Phase4LeadsTests(TestCase):
     def test_admin_views(self):
         admin_user = User.objects.create_superuser('admin', 'admin@test.com', 'password')
         self.client.force_login(admin_user)
-        
+
         urls = [
             '/admin/leads/lead/',
             '/admin/leads/leadnote/',
