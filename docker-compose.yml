@@ -106,59 +106,38 @@ services:
     networks:
       - web
 
+  # Run manually: docker compose run --rm backup
+  # Or via cron on host: 0 2 * * * cd /path/to/project && docker compose run --rm backup
   backup:
-    build: .
+    image: postgres:16-alpine
     restart: "no"
     env_file: .env.production
     environment:
-      DJANGO_ENV: production
-      DB_ENGINE: postgresql
-      DB_NAME: sesoo_db
-      DB_USER: sesoo_user
-      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set}
-      DB_HOST: db
-      DB_PORT: "5432"
+      POSTGRES_DB: sesoo_db
+      POSTGRES_USER: sesoo_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+      PGHOST: db
+      PGPORT: "5432"
     volumes:
-      - ./backups:/app/backups
-      - media_data:/app/media:ro
-    depends_on:
-      db:
-        condition: service_healthy
-    entrypoint: /bin/bash
-    command: >
-      -c "
-      echo 'Starting backup...' &&
-      DATE=$$(date +%Y%m%d_%H%M%S) &&
-      mkdir -p /app/backups &&
-      echo '[$$(date)] Dumping database...' &&
-      pg_dump -U $$DB_USER -h db $$DB_NAME > /app/backups/db_$$DATE.sql &&
-      echo '[$$(date)] Database backup done' &&
-      echo '[$$(date)] Backing up media...' &&
-      tar -czf /app/backups/media_$$DATE.tar.gz -C /app/media . &&
-      echo '[$$(date)] Media backup done' &&
-      find /app/backups/ -type f -mtime +30 -delete 2>/dev/null || true &&
-      echo '[$$(date)] Backup completed'
-      "
-    networks:
-      - web
-
-  backup-scheduler:
-    image: alpine:3.19
-    restart: unless-stopped
-    depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - ./deploy/backup.sh:/backup.sh:ro
       - ./backups:/backups
       - media_data:/media:ro
-      - ./deploy/cron-setup.sh:/cron-setup.sh:ro
+    depends_on:
+      db:
+        condition: service_healthy
     entrypoint: /bin/sh
-    command: >
+    command: >-
       -c "
-      apk add --no-cache docker-cli bash &&
-      echo '0 2 * * * /backup.sh >> /backups/cron.log 2>&1' | crontab - &&
-      crond -f -l 2
+      DATE=$$(date +%Y%m%d_%H%M%S) &&
+      echo '[$$(date)] Starting backup...' &&
+      echo '[$$(date)] Dumping database...' &&
+      PGPASSWORD=$$POSTGRES_PASSWORD pg_dump -U $$POSTGRES_USER -h db $$POSTGRES_DB > /backups/db_$$DATE.sql &&
+      echo '[$$(date)] Database backup: db_$$DATE.sql' &&
+      echo '[$$(date)] Backing up media...' &&
+      tar -czf /backups/media_$$DATE.tar.gz -C /media . &&
+      echo '[$$(date)] Media backup: media_$$DATE.tar.gz' &&
+      find /backups/ -type f -mtime +30 -delete 2>/dev/null || true &&
+      echo '[$$(date)] Backup completed. Files:' &&
+      ls -lh /backups/*_$$DATE* 2>/dev/null
       "
     networks:
       - web

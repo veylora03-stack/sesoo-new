@@ -7,7 +7,7 @@ WORKDIR /app
 
 COPY requirements/ ./requirements/
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements/prod.txt
+RUN pip install --no-cache-dir -r requirements/lock.txt
 
 COPY . .
 

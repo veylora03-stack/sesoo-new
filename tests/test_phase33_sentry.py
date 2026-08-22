@@ -8,7 +8,7 @@ class Phase33SentryTests(TestCase):
         
     def test_sentry_in_requirements(self):
         """sentry-sdk must be in prod requirements."""
-        req_file = Path("requirements/prod.txt") if Path("requirements/prod.txt").exists() else Path("requirements.txt")
+        req_file = Path("requirements/lock.txt") if Path("requirements/lock.txt").exists() else Path("requirements.txt")
         self.assertTrue(req_file.exists(), "Requirements file not found")
         content = req_file.read_text(encoding="utf-8")
         self.assertIn("sentry-sdk", content)

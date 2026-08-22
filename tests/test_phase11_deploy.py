@@ -12,7 +12,7 @@ class Phase11DeployTests(TestCase):
         self.assertTrue(p.exists())
         c = p.read_text(encoding='utf-8')
         self.assertIn('python:3.12-slim', c)
-        self.assertIn('requirements/prod.txt', c)
+        self.assertIn('requirements/lock.txt', c)
         self.assertIn('deploy/entrypoint.sh', c)
         self.assertIn('EXPOSE 8000', c)
 

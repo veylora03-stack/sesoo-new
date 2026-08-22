@@ -1,27 +1,29 @@
 #!/bin/bash
 set -e
 
-SCRIPT_DIR=$(pwd)/deploy
-CRON_JOB="0 2 * * * $SCRIPT_DIR/backup.sh >> $SCRIPT_DIR/../backups/cron.log 2>&1"
+# Setup automated daily backups via host cron.
+# Run this script once on the VPS after deployment.
+#
+# What it does:
+#   Adds a cron job that runs backup every day at 2:00 AM
 
-# Check if cron job already exists (idempotent)
-(crontab -l 2>/dev/null | grep -v "$SCRIPT_DIR/backup.sh"; echo "$CRON_JOB") | crontab -
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+CRON_LINE="0 2 * * * cd $PROJECT_DIR && docker compose run --rm backup >> backups/cron.log 2>&1"
 
-echo "Cron job added successfully (Daily at 2 AM)."
-crontab -l | grep backup.sh
+echo "Setting up daily backup cron job..."
+echo "Project dir: $PROJECT_DIR"
+echo "Cron line: $CRON_LINE"
 
-# Setup logrotate for backup.log
-LOGROTATE_CONF="/etc/logrotate.d/sesoo-backups"
-sudo tee $LOGROTATE_CONF > /dev/null <<EOF
-$(pwd)/backups/backup.log {
-    weekly
-    rotate 4
-    compress
-    delaycompress
-    missingok
-    notifempty
-    create 0644 root root
-}
-EOF
+# Check if cron job already exists
+if crontab -l 2>/dev/null | grep -q "docker compose run --rm backup"; then
+    echo "Backup cron job already exists. Updating..."
+    crontab -l 2>/dev/null | grep -v "docker compose run --rm backup" | { cat; echo "$CRON_LINE"; } | crontab -
+else
+    echo "Adding new backup cron job..."
+    (crontab -l 2>/dev/null; echo "$CRON_LINE") | crontab -
+fi
 
-echo "Logrotate configuration added to $LOGROTATE_CONF"
+echo ""
+echo "Cron job installed. Verify with: crontab -l"
+echo "Backups will run daily at 2:00 AM."
+echo "Logs: backups/cron.log"
