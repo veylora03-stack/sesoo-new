@@ -5,7 +5,6 @@ import time
 import django
 import psutil
 
-from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.db import connections
@@ -15,6 +14,7 @@ from django.views.generic import TemplateView
 
 
 def robots_txt(request):
+    """Generate robots.txt dynamically with correct sitemap URL."""
     txt = (
         'User-Agent: *\n'
         'Disallow: /admin/\n'
@@ -26,6 +26,8 @@ def robots_txt(request):
         f'Sitemap: {request.build_absolute_uri("/sitemap.xml")}\n'
     )
     return HttpResponse(txt, content_type='text/plain; charset=utf-8')
+
+
 def page_not_found(request, exception):
     """Custom 404 handler."""
     from django.shortcuts import render
@@ -35,11 +37,12 @@ def page_not_found(request, exception):
 class DashboardView(LoginRequiredMixin, TemplateView):
     """Staff-only dashboard view."""
     template_name = "dashboard/index.html"
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_staff:
             return redirect('/')
         return super().dispatch(request, *args, **kwargs)
+
 
 def server_error(request):
     """Custom 500 handler."""
@@ -55,18 +58,19 @@ def test_error_view(request):
         return HttpResponseForbidden("Only available in development.")
     raise ValueError("This is a test error for Sentry monitoring.")
 
+
 def healthz_view(request):
-    
+    """Basic health check for load balancers and container orchestration."""
     status_code = 200
     db_status = "ok"
     cache_status = "ok"
-    
+
     try:
         connections['default'].ensure_connection()
     except Exception:
         db_status = "error"
         status_code = 503
-        
+
     try:
         cache.set("healthz_test", "ok", 10)
         if cache.get("healthz_test") != "ok":
@@ -74,7 +78,7 @@ def healthz_view(request):
     except Exception:
         cache_status = "error"
         status_code = 503
-        
+
     data = {
         "status": "healthy" if status_code == 200 else "unhealthy",
         "database": db_status,
@@ -82,7 +86,9 @@ def healthz_view(request):
     }
     return JsonResponse(data, status=status_code)
 
+
 def healthz_detailed_view(request):
+    """Detailed health check for staff only — includes system metrics."""
     if not getattr(request, 'user', None) or not request.user.is_authenticated or not request.user.is_staff:
         return redirect('/admin/login/?next=' + request.path)
 

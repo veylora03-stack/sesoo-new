@@ -29,6 +29,18 @@ jobs:
         ports:
           - 6379:6379
 
+    env:
+      DJANGO_ENV: production
+      SECRET_KEY: ci-test-secret-key
+      ALLOWED_HOSTS: localhost
+      DB_ENGINE: postgresql
+      DB_NAME: test_db
+      DB_USER: test_user
+      DB_PASSWORD: test_pass
+      DB_HOST: localhost
+      DB_PORT: 5432
+      REDIS_URL: redis://localhost:6379/1
+
     steps:
       - uses: actions/checkout@v4
 
@@ -44,32 +56,13 @@ jobs:
           pip install -r requirements/prod.txt
 
       - name: Django check
-        env:
-          DJANGO_ENV: production
-          SECRET_KEY: ci-test-secret-key
-          ALLOWED_HOSTS: localhost
-          DB_ENGINE: postgresql
-          DB_NAME: test_db
-          DB_USER: test_user
-          DB_PASSWORD: test_pass
-          DB_HOST: localhost
-          DB_PORT: 5432
-          REDIS_URL: redis://localhost:6379/1
         run: python manage.py check
 
       - name: Django deploy check
-        env:
-          DJANGO_ENV: production
-          SECRET_KEY: ci-test-secret-key
-          ALLOWED_HOSTS: localhost
-          DB_ENGINE: postgresql
-          DB_NAME: test_db
-          DB_USER: test_user
-          DB_PASSWORD: test_pass
-          DB_HOST: localhost
-          DB_PORT: 5432
-          REDIS_URL: redis://localhost:6379/1
         run: python manage.py check --deploy
+
+      - name: Run migrations
+        run: python manage.py migrate --noinput
 
       - name: Run tests
         run: python manage.py test tests --verbosity=2
@@ -87,5 +80,5 @@ jobs:
       - name: Build Docker image
         run: docker compose build
 
-      - name: Verify Docker Compose config
+      - name: Verify Docker Compose services
         run: docker compose config --services

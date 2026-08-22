@@ -1,13 +1,26 @@
 {$SITE_DOMAIN} {
-encode gzip zstd
+    encode gzip zstd
 
-handle /media/* {
-uri strip_prefix /media
-root * /app/media
-file_server
-}
+    # Security headers
+    header {
+        X-Frame-Options "DENY"
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "same-origin"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        -Server
+    }
 
-handle {
-reverse_proxy web:8000
-}
+    # Media files
+    handle /media/* {
+        uri strip_prefix /media
+        root * /app/media
+        file_server {
+            expires 30d
+        }
+    }
+
+    # Reverse proxy to Django/Gunicorn
+    handle {
+        reverse_proxy web:8000
+    }
 }

@@ -1,5 +1,3 @@
-import time
-
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
@@ -51,7 +49,6 @@ class ContactView(FormView):
         instance.save()
         send_lead_notification(instance)
 
-        # Record for rate limiting
         record_lead_submission(self.request)
 
         messages.success(self.request, "درخواست شما با موفقیت ثبت شد. کارشناسان تبریز سایت به‌زودی با شما تماس می‌گیرند.")

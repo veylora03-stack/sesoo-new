@@ -8,11 +8,11 @@ from django.core.cache import cache
 # Configuration
 RATE_LIMIT_WINDOW = 60  # seconds
 RATE_LIMIT_MAX_REQUESTS = 5  # max leads per window per IP
-RATE_LIMIT冷却 = 30  # seconds cooldown after hitting limit
+RATE_LIMIT_COOLDOWN = 30  # seconds cooldown after hitting limit
 
 
 def get_client_ip(request):
-    """Extract client IP from request."""
+    """Extract client IP from request, respecting X-Forwarded-For behind reverse proxy."""
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         return x_forwarded_for.split(',')[0].strip()
@@ -52,11 +52,9 @@ def is_rate_limited(request):
 
     # Check limit
     if data["count"] >= RATE_LIMIT_MAX_REQUESTS:
-        # Set cooldown
-        cooldown_until = time.time() + RATE_LIMIT冷却
-        cache.set(cooldown_key, cooldown_until, RATE_LIMIT冷却)
-        retry_after = RATE_LIMIT冷却
-        return True, 0, retry_after
+        cooldown_until = time.time() + RATE_LIMIT_COOLDOWN
+        cache.set(cooldown_key, cooldown_until, RATE_LIMIT_COOLDOWN)
+        return True, 0, RATE_LIMIT_COOLDOWN
 
     return False, RATE_LIMIT_MAX_REQUESTS - data["count"], 0
 
