@@ -30,7 +30,7 @@ jobs:
           - 6379:6379
 
     env:
-      DJANGO_ENV: production
+      DJANGO_SETTINGS_MODULE: tests.settings
       SECRET_KEY: ci-test-secret-key
       ALLOWED_HOSTS: localhost
       DB_ENGINE: postgresql
@@ -39,8 +39,6 @@ jobs:
       DB_PASSWORD: test_pass
       DB_HOST: localhost
       DB_PORT: 5432
-      REDIS_URL: redis://localhost:6379/1
-      SECURE_SSL_REDIRECT: "False"
 
     steps:
       - uses: actions/checkout@v4
@@ -61,9 +59,6 @@ jobs:
 
       - name: Run migrations
         run: python manage.py migrate --noinput
-
-      - name: Collect static files
-        run: python manage.py collectstatic --noinput
 
       - name: Run tests
         run: python manage.py test tests --verbosity=2
