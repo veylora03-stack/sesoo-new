@@ -16,8 +16,8 @@ if os.environ.get('ALLOWED_HOSTS'):
     ALLOWED_HOSTS = [host.strip() for host in os.environ.get('ALLOWED_HOSTS').split(',')]
 
 INSTALLED_APPS = [
-    'ckeditor',
-    'ckeditor_uploader',
+    'django_ckeditor_5',
+
     'axes',
     'django.contrib.sites',
     'django.contrib.sitemaps',
@@ -135,17 +135,39 @@ DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@tabrizsite.local")
 LEAD_NOTIFY_EMAIL = os.getenv("LEAD_NOTIFY_EMAIL", "")
 
 
-# TABRIZ PHASE27 CKEDITOR
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_IMAGE_BACKEND = "pillow"
-CKEDITOR_CONFIGS = {
+# CKEditor 5
+CKEDITOR_5_CONFIGS = {
     "default": {
-        "toolbar": "full",
+        "toolbar": [
+            "heading", "|",
+            "bold", "italic", "link", "bulletedList", "numberedList", "|",
+            "outdent", "indent", "|",
+            "blockQuote", "insertTable", "undo", "redo",
+        ],
         "language": "fa",
-        "contentsLangDirection": "rtl",
-        "height": 320,
-        "autoParagraph": True,
-        "removeDialogTabs": "image:advanced;link:advanced",
+        "direction": "rtl",
+    },
+    "extends": {
+        "toolbar": [
+            "heading", "|",
+            "bold", "italic", "link", "bulletedList", "numberedList", "|",
+            "outdent", "indent", "|",
+            "blockQuote", "insertTable", "uploadImage", "mediaEmbed",
+            "undo", "redo",
+        ],
+        "language": "fa",
+        "direction": "rtl",
+        "image": {
+            "toolbar": [
+                "imageTextAlternative", "toggleImageCaption", "imageStyle:inline",
+                "imageStyle:block", "imageStyle:side",
+            ]
+        },
+        "table": {
+            "contentToolbar": [
+                "tableColumn", "tableRow", "mergeTableCells",
+            ]
+        },
     },
 }
 

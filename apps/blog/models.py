@@ -1,4 +1,4 @@
-from ckeditor_uploader.fields import RichTextUploadingField
+from django_ckeditor_5.fields import CKEditor5Field
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
@@ -46,7 +46,7 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, allow_unicode=True)
     excerpt = models.TextField(blank=True)
-    content = RichTextUploadingField(blank=True)
+    content = CKEditor5Field(blank=True)
     cover_image = models.ImageField(upload_to='blog/covers/', null=True, blank=True)
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.PROTECT)
     tags = models.ManyToManyField(Tag, related_name='posts', blank=True)

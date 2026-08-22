@@ -30,4 +30,4 @@ urlpatterns = [
 
 handler404 = "apps.core.views.page_not_found"
 handler500 = "apps.core.views.server_error"
-urlpatterns += [path("ckeditor/", include("ckeditor_uploader.urls"))]
+urlpatterns += [path("ckeditor5/", include("django_ckeditor_5.urls"))]
