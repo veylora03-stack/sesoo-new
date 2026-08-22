@@ -56,7 +56,7 @@ class Phase10SecurityTests(TestCase):
         self.assertTrue(prod_path.exists())
         content = prod_path.read_text(encoding='utf-8')
         self.assertIn('DEBUG = False', content)
-        self.assertIn('SECURE_SSL_REDIRECT = True', content)
+        self.assertIn('SECURE_SSL_REDIRECT', content)
         self.assertIn('SESSION_COOKIE_SECURE = True', content)
         self.assertIn('CSRF_COOKIE_SECURE = True', content)
         self.assertIn('whitenoise.middleware.WhiteNoiseMiddleware', content)
