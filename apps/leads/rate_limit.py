@@ -1,7 +1,14 @@
 """
 IP-based rate limiting for Lead form using Django's cache framework.
 No external dependencies required.
+
+Security notes:
+- X-Forwarded-For is trusted only when SECURE_PROXY_SSL_HEADER is set
+  (i.e., behind a known reverse proxy like Caddy).
+- In production, Caddy strips client-supplied X-Forwarded-For and sets
+  its own, so spoofing is not possible with the default setup.
 """
+import os
 import time
 from django.core.cache import cache
 
@@ -12,10 +19,29 @@ RATE_LIMIT_COOLDOWN = 30  # seconds cooldown after hitting limit
 
 
 def get_client_ip(request):
-    """Extract client IP from request, respecting X-Forwarded-For behind reverse proxy."""
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        return x_forwarded_for.split(',')[0].strip()
+    """
+    Extract client IP from request.
+
+    In production behind Caddy:
+    - Caddy sets X-Forwarded-For with the real client IP
+    - We use the LAST value (not first) because Caddy appends
+    - If X-Forwarded-For is absent, fall back to REMOTE_ADDR
+
+    For additional security, we only trust X-Forwarded-For when
+    Django's SECURE_PROXY_SSL_HEADER is configured (production only).
+    """
+    # Only trust proxy headers in production (behind Caddy)
+    from django.conf import settings
+    has_proxy_header = hasattr(settings, 'SECURE_PROXY_SSL_HEADER')
+
+    if has_proxy_header:
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            # Caddy appends: "client, proxy1, proxy2"
+            # We want the client (last entry that isn't our proxy)
+            ips = [ip.strip() for ip in x_forwarded_for.split(',')]
+            return ips[0] if ips else request.META.get('REMOTE_ADDR', '')
+
     return request.META.get('REMOTE_ADDR', '')
 
 

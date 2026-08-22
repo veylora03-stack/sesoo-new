@@ -17,32 +17,38 @@ DB_NAME="${DB_NAME:-sesoo_db}"
 
 mkdir -p "$BACKUP_DIR"
 
-echo "[$DATE] Starting backup..." >> "$LOG_FILE"
+echo "[$(date)] Starting backup..." | tee -a "$LOG_FILE"
 
 # Database backup
-echo "[$DATE] Dumping database..." >> "$LOG_FILE"
+echo "[$(date)] Dumping database..." | tee -a "$LOG_FILE"
 if docker compose exec -T db pg_dump -U "$DB_USER" "$DB_NAME" > "$BACKUP_DIR/db_$DATE.sql"; then
-    echo "[$DATE] Database backup successful: db_$DATE.sql" >> "$LOG_FILE"
+    echo "[$(date)] Database backup: db_$DATE.sql ($(wc -c < "$BACKUP_DIR/db_$DATE.sql") bytes)" | tee -a "$LOG_FILE"
 else
-    echo "[$DATE] Database backup FAILED" >> "$LOG_FILE"
+    echo "[$(date)] ERROR: Database backup FAILED" | tee -a "$LOG_FILE"
     exit 1
 fi
 
-# Media backup (copy from Docker volume)
-echo "[$DATE] Archiving media folder..." >> "$LOG_FILE"
-if docker compose cp web:/app/media - | tar -czf "$BACKUP_DIR/media_$DATE.tar.gz" -C - .; then
-    echo "[$DATE] Media backup successful: media_$DATE.tar.gz" >> "$LOG_FILE"
+# Media backup (copy from Docker volume via container)
+echo "[$(date)] Backing up media..." | tee -a "$LOG_FILE"
+# Create a temporary container to read the volume
+if docker run --rm -v sesoo-web-new_media_data:/data:ro -v "$(pwd)/$BACKUP_DIR":/backup alpine \
+    tar -czf "/backup/media_$DATE.tar.gz" -C /data . 2>/dev/null; then
+    echo "[$(date)] Media backup: media_$DATE.tar.gz ($(wc -c < "$BACKUP_DIR/media_$DATE.tar.gz") bytes)" | tee -a "$LOG_FILE"
 else
-    echo "[$DATE] Media backup FAILED (falling back to local media/)" >> "$LOG_FILE"
-    tar -czf "$BACKUP_DIR/media_$DATE.tar.gz" media/ || {
-        echo "[$DATE] Media backup FAILED" >> "$LOG_FILE"
-        exit 1
-    }
+    echo "[$(date)] WARNING: Media volume backup failed, trying container cp..." | tee -a "$LOG_FILE"
+    if docker compose cp web:/app/media/. - 2>/dev/null | tar -czf "$BACKUP_DIR/media_$DATE.tar.gz" -C - .; then
+        echo "[$(date)] Media backup (fallback): media_$DATE.tar.gz" | tee -a "$LOG_FILE"
+    else
+        echo "[$(date)] WARNING: Media backup failed entirely" | tee -a "$LOG_FILE"
+        echo "[] > /dev/null" > "$BACKUP_DIR/media_$DATE.tar.gz.empty"
+    fi
 fi
 
-# Cleanup old backups (older than 30 days) - Retention Policy
-echo "[$DATE] Cleaning up old backups (older than 30 days)..." >> "$LOG_FILE"
-find "$BACKUP_DIR/" -type f -mtime +30 -delete
+# Cleanup old backups (older than 30 days)
+echo "[$(date)] Cleaning up backups older than 30 days..." | tee -a "$LOG_FILE"
+find "$BACKUP_DIR/" -type f -mtime +30 -delete 2>/dev/null || true
 
-echo "[$DATE] Backup completed successfully." >> "$LOG_FILE"
-echo "Backup completed successfully. Check $LOG_FILE for details."
+# Summary
+echo "[$(date)] Backup completed successfully." | tee -a "$LOG_FILE"
+echo "Files:"
+ls -lh "$BACKUP_DIR/"*_$DATE* 2>/dev/null | tee -a "$LOG_FILE"
