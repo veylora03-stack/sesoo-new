@@ -1,0 +1,24 @@
+# Pinned dependency versions for reproducible builds.
+# Generated: 2026-08-22
+# Update with: pip freeze > requirements/lock.txt
+
+# Base
+Django==5.2.17
+django-environ==0.14.0
+Pillow==11.3.0
+django-axes==8.3.1
+django-ckeditor-5==0.2.20
+psutil==7.2.2
+
+# Production
+psycopg[binary]==3.2.6
+whitenoise==6.12.0
+django-redis==5.4.0
+gunicorn==23.0.0
+sentry-sdk[django]==2.19.2
+
+# Transitive (kept for reference)
+asgiref==3.12.1
+sqlparse==0.6.0
+tzdata==2026.3
+django-js-asset==4.0.2
